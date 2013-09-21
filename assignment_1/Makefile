@@ -48,11 +48,14 @@ ${EXEC2} : ${OBJECTS2}
 ${EXEC3} : ${OBJECTS3}
 	g++ ${CXXFLAGS} $^ -o $@
 
-q2%.o : q2%.cc					# change compiler 2nd executable
+q2resumption.o : q2resumption.cc		# change compiler 2nd executable
+	u++ ${CXXFLAGS} -c $< -o $@
+
+q2noresumption.o : q2noresumption.cc		# change compiler 2nd executable
 	g++ ${CXXFLAGS} -c $< -o $@
 
 ${EXEC00} : ${OBJECTS00}
-	g++ ${CXXFLAGS} $^ -o $@
+	${CXX} ${CXXFLAGS} $^ -o $@
 
 ${EXEC4} : ${OBJECTS4}
 	g++ ${CXXFLAGS} $^ -o $@

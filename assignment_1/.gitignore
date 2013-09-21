@@ -2,3 +2,5 @@ flags
 exception
 globalstatusflag
 returncodes
+resumption
+noresumption

@@ -4,6 +4,8 @@
 #include <limits.h>         // access: INT_MIN
 using namespace std;
 
+#define NO_ERROR INT_MIN
+
 int times = 1000;
 
 /**
@@ -33,7 +35,7 @@ int rtn2( int i ) {
 }
 
 /**
- * @return INT_MIN on completion, another int on early exit
+ * @return NO_ERROR on completion, another int on early exit
  */
 int g( int i ) {
   bool broken = false;
@@ -63,34 +65,34 @@ int g( int i ) {
       broken = true;
     }
   }
-  return broken ? return_value : INT_MIN;
+  return broken ? return_value : NO_ERROR;
 }
 
 /**
- * @return INT_MIN on completion, another int on early exit
+ * @return NO_ERROR on completion, another int on early exit
  */
 int f( int i ) {
   bool broken = false;
   int return_value;
   for ( int j = 0; j < times && !broken; j += 1 ) {
     return_value = g( i );
-    if (return_value != INT_MIN) {
+    if (return_value != NO_ERROR) {
       broken = true;
     }
   }
   if ((!broken) && (i % 2)) {
     return_value = g( i );
-    if (return_value != INT_MIN) {
+    if (return_value != NO_ERROR) {
       broken = true;
     }
   }
   if (!broken) {
     return_value = g( i );
-    if (return_value != INT_MIN) {
+    if (return_value != NO_ERROR) {
       broken = true;
     }
   }
-  return broken ? return_value : INT_MIN;
+  return broken ? return_value : NO_ERROR;
 }
 int main( int argc, char *argv[] ) {
   int seed = getpid();
@@ -98,7 +100,7 @@ int main( int argc, char *argv[] ) {
   srand( seed );
   if ( argc == 3 ) times = atoi( argv[2] );
   int return_value = f( 3 );
-  if (return_value == INT_MIN) {
+  if (return_value == NO_ERROR) {
     cout << "seed:" << seed << " times:" << times << " complete" << endl;
   } else {
     cout << "seed:" << seed << " times:" << times << " rc:" << return_value << endl;

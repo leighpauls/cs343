@@ -1,11 +1,14 @@
 #!/usr/bin/python
 
 from subprocess import check_output
+import sys
 
 def run_for_seed(command, seed, times):
     cmd = [command, str(seed), str(times)]
     print "running: ", cmd
-    return check_output(cmd)
+    output = check_output(cmd)
+    print "got: ", output.split("\n", 1)[0]
+    return output
 
 def run_for_seed_range(commands, seeds_start, seeds_end):
     for seed in xrange(seeds_start, seeds_end):
@@ -25,9 +28,11 @@ def run_for_seed_range(commands, seeds_start, seeds_end):
 
 def main():
     run_for_seed_range(
-        ["./exception", "./flags"],
+        ["./exception", "./flags", "./returncodes", "./globalstatusflag"],
         0,
         1000)
+    #exited early, must be a failure
+    sys.exit(1)
 
 if __name__ == "__main__":
     main()

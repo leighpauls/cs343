@@ -3,84 +3,86 @@
 #include <cstdlib>
 using namespace std;
 
-class H {                                                // uC++ exception type
- public:
-  int &i;                                               // pointer to fixup variable at raise
-  H( int &i ) : i( i ) {}
-};
-
 class FixupFunctor {
  public:
-  virtual void do_fixup( int &i) = 0;
+  virtual void doFixup(int &i) = 0;
 };
 
-void f( int &i, FixupFunctor &parent_fixup );
-void g( int &i, FixupFunctor &parent_fixup );
+void f(int &i, FixupFunctor &parentFixup);
+void g(int &i, FixupFunctor &parentFixup);
 
 class FFixup : public FixupFunctor {
  protected:
-  FixupFunctor &m_parent_fixup;
+  FixupFunctor &mParentFixup;
  public:
-  FFixup(FixupFunctor &parent_fixup) : m_parent_fixup(parent_fixup) {}
-  
-  virtual void do_fixup( int &i ) {
+  FFixup(FixupFunctor &parentFixup) : mParentFixup(parentFixup) {}
+
+  /**
+   * This code is taken from the _CatchResume block originally in f
+   */
+  virtual void doFixup(int &i) {
     cout << "f handler, i:" << i << endl;
-    i -= 7;                                         // fix variable at raise
-    if ( rand() % 7 == 0 ) g( i, m_parent_fixup);   // mutual recursion
+    i -= 7;
+    if (rand() % 7 == 0) g(i, mParentFixup);
   }
 };
 
-void f( int &i, FixupFunctor &parent_fixup) {
-  FFixup local_fixup(parent_fixup);
+void f(int &i, FixupFunctor &parentFixup) {
+  FFixup localFixup(parentFixup);
   cout << "f " << i << endl;
 
-  // do things that can be fixed by me
-  if ( rand() % 5 == 0 ) local_fixup.do_fixup(i);
-  if ( rand() % 7 == 0 ) g( i, local_fixup );
+  // Things that can be fixed by me use the local fixup
+  if (rand() % 5 == 0) localFixup.doFixup(i);
+  if (rand() % 7 == 0) g(i, localFixup);
 
-  // do things that I can't fix on my own
-  if ( 0 < i ) f( i, parent_fixup );
+  // Things that I can't fix use the calling function's fixup
+  if (0 < i) f(i, parentFixup);
 }
 
 class GFixup : public FixupFunctor {
  protected:
-  FixupFunctor &m_parent_fixup;
+  FixupFunctor &mParentFixup;
  public:
-  GFixup(FixupFunctor &parent_fixup) : m_parent_fixup(parent_fixup) {}
+  GFixup(FixupFunctor &parentFixup) : mParentFixup(parentFixup) {}
 
-  virtual void do_fixup( int &i ) {
+  /**
+   * This code is taken from the _CatchResume block originally in g
+   */
+  virtual void doFixup(int &i) {
     cout << "g handler, i:" << i << endl;
     i -= 5;
-    if ( rand() % 5 == 0 ) f( i, m_parent_fixup );
+    if (rand() % 5 == 0) f(i, mParentFixup);
   }
 };
 
-void g( int &i, FixupFunctor &parent_fixup ) {
-  GFixup local_fixup(parent_fixup);
+void g(int &i, FixupFunctor &parentFixup) {
+  GFixup localFixup(parentFixup);
   cout << "g " << i << endl;
 
-  // do things that can be fixed by me
-  if ( rand() % 7 == 0 ) local_fixup.do_fixup( i );
-  if ( rand() % 5 == 0 ) f( i, local_fixup );
+  // Things that can be fixed by me use the local fixup
+  if (rand() % 7 == 0) localFixup.doFixup(i);
+  if (rand() % 5 == 0) f(i, localFixup);
 
-  // do things that I can't fix on my own
-  if ( 0 < i ) g( i, parent_fixup );
+  // Things that I can't fix use the calling function's fixup
+  if (0 < i) g(i, parentFixup);
 }
 
 
 class MainFixup : public FixupFunctor {
  public:
-  virtual void do_fixup( int &i ) {
+  virtual void doFixup(int &i) {
     throw new runtime_error("Invalid request for main to do a fixup");
   }
 };
 
 int main(int argc, char **argv) {
   int times = 25, seed = getpid();
-  if ( argc >= 2 ) times = atoi( argv[1] );             // control recursion depth
-  if ( argc == 3 ) seed  = atoi( argv[2] );             // allow repeatable experiment
-  srand( seed );    
+  // control recursion depth
+  if (argc >= 2) times = atoi(argv[1]);
+  // allow repeatable experiment
+  if (argc == 3) seed  = atoi(argv[2]);
+  srand(seed);
   MainFixup fixup = MainFixup();
-  f( times, (FixupFunctor&)fixup );
+  f(times, (FixupFunctor&)fixup);
   return 0;
 }

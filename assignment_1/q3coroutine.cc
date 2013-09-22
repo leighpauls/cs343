@@ -14,15 +14,18 @@ public:
   struct Error {};
 private:
   union UTF8 {
-    unsigned char ch;                                // character passed by cocaller
-#if defined( _BIG_ENDIAN ) || BYTE_ORDER == BIG_ENDIAN   // BIG ENDIAN architecture
-    struct {                                         // types for 1st utf-8 byte
-      unsigned char ck : 1;                        // check
-      unsigned char dt : 7;                        // data
+    unsigned char ch; //! character passed by cocaller
+
+#if defined( _BIG_ENDIAN ) || BYTE_ORDER == BIG_ENDIAN
+    // BIG ENDIAN architecture
+    // Types for 1st utf-8 byte
+    struct {
+      unsigned char ck : 1;
+      unsigned char dt : 7;
     } t1;
     struct {
-      unsigned char ck : 3;                        // check
-      unsigned char dt : 5;                        // data
+      unsigned char ck : 3;
+      unsigned char dt : 5;
     } t2;
     struct {
       unsigned char ck : 4;
@@ -32,109 +35,131 @@ private:
       unsigned char ck : 5;
       unsigned char dt : 3;
     } t4;
-    struct {                                         // type for extra utf-8 bytes
+    // Type for extra utf-8 bytes
+    struct {
       unsigned char ck : 2;
       unsigned char dt : 6;
     } dt;
-#else                                                    // LITTLE ENDIAN architecture
-    struct {                                         // types for 1st utf-8 byte
-      unsigned char dt : 7;                        // data
-      unsigned char ck : 1;                        // check
+#else
+    // LITTLE ENDIAN architecture
+    // types for 1st utf-8 byte
+    struct {
+      unsigned char dt : 7;
+      unsigned char ck : 1;
     } t1;
     struct {
-      unsigned char dt : 5;                        // data
-      unsigned char ck : 3;                        // check
+      unsigned char dt : 5;
+      unsigned char ck : 3;
     } t2;
     struct {
-      unsigned char dt : 4;                        // data
-      unsigned char ck : 4;                        // check
+      unsigned char dt : 4;
+      unsigned char ck : 4;
     } t3;
     struct {
-      unsigned char dt : 3;                        // data
-      unsigned char ck : 5;                        // check
+      unsigned char dt : 3;
+      unsigned char ck : 5;
     } t4;
-    struct {                                         // type for extra utf-8 bytes
+    // type for extra utf-8 bytes
+    struct {
       unsigned char dt : 6;
       unsigned char ck : 2;
     } dt;
-#endif
-  } m_utf8;
+#endif // if defined( _BIG_ENDIAN ) || BYTE_ORDER == BIG_ENDIAN
+  } mUtf8Byte;
 
-  void main();
-  unsigned int m_built_char_code;
+  unsigned int mBuiltCharCode; //! The resulting build code
   enum DecodingStatus {
-    DECODING,
-    ERROR,
-    MATCH,
-  } m_decoding_status;
-  
-  void raise_error();
+    DECODING, //! More bytes are needed to decode
+    ERROR,    //! The code is invalid, don't try to send more bytes
+    MATCH,    //! The code is now valid, don't try to send more bytes
+  } mDecodingStatus;
 
+  /** Helper function for signaling a decoding error */
+  void raiseError();
+  /** The body of the decoding function */
+  void main();
 public:
 
-  Utf8() : m_decoding_status(DECODING) {}
+  Utf8() : mDecodingStatus(DECODING) {}
 
-  // YOU MAY ADD CONSTRUCTOR/DESTRUCTOR IF NEEDED
+  /**
+   * Gives the decoder another byte to consume
+   * @param c  The new byte to decode
+   * @throws Error  when c makes the code invalid
+   * @throws Match  when c completes a valid code
+   */
   void next( unsigned char c ) {
-    m_utf8.ch = c; // insert character into union for analysis
+    // insert character into union for analysis
+    mUtf8Byte.ch = c;
     resume();
 
     // if necessary throw Match or Error exception
-    switch (m_decoding_status) {
+    switch (mDecodingStatus) {
       case ERROR:
         throw Error();
       case MATCH:
-        throw Match(m_built_char_code);
+        throw Match(mBuiltCharCode);
       case DECODING:
         break;
-    }
+    } // switch
   }
 };
 
-void Utf8::raise_error() {
-  m_decoding_status = ERROR;
+void Utf8::raiseError() {
+  mDecodingStatus = ERROR;
   suspend();
   throw runtime_error("Resumed utf decoder after an error");
 }
 
 void Utf8::main() {
-  int extra_bytes;
-  // get a byte
-  if (m_utf8.t1.ck == 0x0) {
-    extra_bytes = 0;
-    m_built_char_code = m_utf8.t1.dt;
-  } else if (m_utf8.t2.ck == 0x6) {
-    extra_bytes = 1;
-    m_built_char_code = m_utf8.t2.dt;
-  } else if (m_utf8.t3.ck == 0xe) {
-    extra_bytes = 2;
-    m_built_char_code = m_utf8.t3.dt;
-  } else if (m_utf8.t4.ck == 0x1e) {
-    extra_bytes = 3;
-    m_built_char_code = m_utf8.t4.dt;
+  // determine how many bytes are left over based on the first byte
+  int extraBytes;
+  if (mUtf8Byte.t1.ck == 0x0) {
+    extraBytes = 0;
+    mBuiltCharCode = mUtf8Byte.t1.dt;
+  } else if (mUtf8Byte.t2.ck == 0x6) {
+    extraBytes = 1;
+    mBuiltCharCode = mUtf8Byte.t2.dt;
+  } else if (mUtf8Byte.t3.ck == 0xe) {
+    extraBytes = 2;
+    mBuiltCharCode = mUtf8Byte.t3.dt;
+  } else if (mUtf8Byte.t4.ck == 0x1e) {
+    extraBytes = 3;
+    mBuiltCharCode = mUtf8Byte.t4.dt;
   } else {
-    raise_error();
-  }
-  for (int i = 0; i < extra_bytes; i++) {
-    // get a new byte
+    raiseError();
+  } // if
+
+  for (int i = 0; i < extraBytes; i++) {
+    // wait for the next byte to be provided
     suspend();
+
     // verify that the new byte is valid
-    if (m_utf8.dt.ck != 0x2) {
-      raise_error();
-    }
+    if (mUtf8Byte.dt.ck != 0x2) {
+      raiseError();
+    } // if
+
     // amend the built value
-    m_built_char_code = (m_built_char_code << 6) | m_utf8.dt.dt;
-    // if m_built_char_code is still zero by this point, it must not be minially encoded
-    if (m_built_char_code == 0) {
-      raise_error();
-    }
-  }
+    mBuiltCharCode = (mBuiltCharCode << 6) | mUtf8Byte.dt.dt;
+
+    // if mBuiltCharCode is still zero by this point, it isn't minimally encoded
+    if (mBuiltCharCode == 0) {
+      raiseError();
+    } // if
+  } // for
+
   // I've finished building it if execution makes it here
-  m_decoding_status = MATCH;
+  mDecodingStatus = MATCH;
   suspend();
 }
 
-unsigned int from_byte_array(unsigned char *bytes, size_t len) {
+/**
+ * Convert from an array of bytes to an int
+ * @param  bytes  char array to read from
+ * @param  len    how many bytes to read
+ * @return        unsinged int representation of bytes
+ */
+unsigned int fromByteArray(unsigned char *bytes, size_t len) {
   unsigned int res = 0;
   for (size_t i = 0; i < len; i++) {
     res = (res << 8) | bytes[i];
@@ -142,73 +167,98 @@ unsigned int from_byte_array(unsigned char *bytes, size_t len) {
   return res;
 }
 
-void write_result_line(unsigned char *buffer, size_t consumed, size_t input_len, bool success, unsigned int unicode) {
-  // print the bytes consumed
+/**
+ * Helper method for formatting the output like the example program
+ * @param buffer    buffer of bytes that was decoded
+ * @param consumed  number of bytes consumed by the decoding
+ * @param inputLen  number of bytes actually put into buffer
+ * @param success   true iff the decoding was successful
+ * @param unicode   the decoded value
+ */
+void writeResultLine(
+    unsigned char *buffer,
+    size_t consumed,
+    size_t inputLen,
+    bool success,
+    unsigned int unicode = 0) {
   if (consumed > 0) {
-    cout<<"0x"<<hex<<from_byte_array(buffer, consumed);
+    cout << "0x" << hex << fromByteArray(buffer, consumed);
   }
   cout<<" : ";
-  if (input_len == 0) {
-    cout<<"Warning! Blank line."<<endl;
+  if (inputLen == 0) {
+    cout << "Warning! Blank line." << endl;
     return;
   }
   if (success) {
-    cout<<"valid 0x"<<hex<<unicode;
+    cout << "valid 0x" << hex << unicode;
   } else {
-    cout<<"invalid";
+    cout << "invalid";
   }
-  
-  if (consumed != input_len) {
-    cout<<". Extra characters 0x"<<hex<<from_byte_array(&buffer[consumed], input_len - consumed);
+  if (consumed != inputLen) {
+    cout << ". Extra characters 0x"
+         << hex << fromByteArray(&buffer[consumed], inputLen - consumed);
   }
-  cout<<endl;
+  cout << endl;
 }
 
-void utf8_decode_line(unsigned char *buffer, size_t limit) {
+/**
+ * Attempts to decode one line as utf8
+ * @param buffer  bytes to decode
+ * @param limit   number of bytes available in buffer
+ */
+void utf8DecodeLine(unsigned char *buffer, size_t limit) {
   Utf8 decoder;
   int i;
   for (i = 0; i < limit; ++i) {
     try {
       decoder.next(buffer[i]);
     } catch (Utf8::Match match) {
-      write_result_line(buffer, i+1, limit, true, match.unicode);
+      writeResultLine(buffer, i+1, limit, true, match.unicode);
       return;
     } catch (Utf8::Error error) {
-      write_result_line(buffer, i+1, limit, false, 0);
+      writeResultLine(buffer, i+1, limit, false);
       return;
     }
   }
-  // If the decoder gets here, then it has failed
-  write_result_line(buffer, i, limit, false, 0);
+  // If the decoder gets here, then it has failed to find a unicode
+  writeResultLine(buffer, i, limit, false);
 }
 
-void utf8_decode_stream(istream &in) {
-  const size_t buffer_size = 32;
-  unsigned char buffer[buffer_size];
+/**
+ * Reads the stream line-by-line, outputing what it can decode, or if it can't.
+ * Exits when the stream has been exausted.
+ * @param in  stream to read from
+ */
+void utf8DecodeStream(istream &in) {
+  const size_t BUFFER_SIZE = 32;
+  unsigned char buffer[BUFFER_SIZE];
   for (;;) {
-    in.getline((char*)buffer, buffer_size);
+    in.getline((char*)buffer, BUFFER_SIZE);
     if (in.eof()) {
       // I've reached the end of the file safely
       return;
     }
     if (in.fail()) {
-      throw runtime_error("Didn't allocate enough buffer space to read this line");
+      throw runtime_error(
+          "Didn't allocate enough buffer space to read this line");
     }
-    utf8_decode_line(buffer, in.gcount() - 1);
+    utf8DecodeLine(buffer, in.gcount() - 1);
   }
 }
 
-void do_utf8_decode(int argc, char** argv) {
+/**
+ * Immitation main function, broken out so that runtime_error's are prettier to
+ * catch and log.
+ */
+void doUtf8Decode(int argc, char** argv) {
   if (argc <= 1) {
-    cout<<"Reading from cin"<<endl;
-    utf8_decode_stream(cin);
+    utf8DecodeStream(cin);
   } else {
-    cout<<"Using file input: "<<argv[1]<<endl;
     ifstream input_file;
     input_file.open(argv[1], ios::in | ios::binary);
 
     if (input_file.is_open()) {
-      utf8_decode_stream(input_file);
+      utf8DecodeStream(input_file);
     } else {
       throw runtime_error("couldn't open the input file");
     }
@@ -217,7 +267,7 @@ void do_utf8_decode(int argc, char** argv) {
 
 void uMain::main() {
   try {
-    do_utf8_decode(argc, argv);
+    doUtf8Decode(argc, argv);
   } catch (runtime_error e) {
     cout<<"RUNTIME ERROR NOT CAUGHT: "<<e.what()<<endl;
     throw;

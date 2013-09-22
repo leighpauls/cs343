@@ -71,7 +71,7 @@ void g( int &i, FixupFunctor &parent_fixup ) {
 class MainFixup : public FixupFunctor {
  public:
   virtual void do_fixup( int &i ) {
-    throw new runtime_error("Invalid request for uMain::main to do a fixup");
+    throw new runtime_error("Invalid request for main to do a fixup");
   }
 };
 

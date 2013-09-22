@@ -4,3 +4,6 @@ globalstatusflag
 returncodes
 resumption
 noresumption
+utf8
+utf8_gen
+test_utf8.in

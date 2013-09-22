@@ -20,7 +20,7 @@ EXEC00 = resumption
 OBJECTS4 = q2noresumption.o
 EXEC4 = noresumption
 
-OBJECTS5 = # object files forming 4th executable with prefix "q3"
+OBJECTS5 = q3coroutine.o
 EXEC5 = utf8
 
 OBJECTS = ${OBJECTS1} ${OBJECTS2} ${OBJECTS3} ${OBJECTS4} ${OBJECTS5}
@@ -59,6 +59,9 @@ ${EXEC00} : ${OBJECTS00}
 
 ${EXEC4} : ${OBJECTS4}
 	g++ ${CXXFLAGS} $^ -o $@
+
+q3%.o : q3%.cc
+	${CXX} -c $< -o $@
 
 ${EXEC5} : ${OBJECTS5}
 	${CXX} $^ -o $@

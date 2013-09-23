@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-from subprocess import check_output
+import subprocess
 import sys
 
 def run_for_seed(command, seed, times):
     cmd = [command, str(seed), str(times)]
     print "running: ", cmd
-    output = check_output(cmd)
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
     print "got: ", output.split("\n", 1)[0]
     return output
 

@@ -113,19 +113,24 @@ void Utf8::raiseError() {
 
 void Utf8::main() {
   // determine how many bytes are left over based on the first byte
-  int extraBytes;
+  int extraBytes; //! how many bytes to look for after the first byte
+  unsigned int minUnicodeValue; //! the smallest allowed code for this range
   if (mUtf8Byte.t1.ck == 0x0) {
     extraBytes = 0;
     mBuiltCharCode = mUtf8Byte.t1.dt;
+    minUnicodeValue = 0x0;
   } else if (mUtf8Byte.t2.ck == 0x6) {
     extraBytes = 1;
     mBuiltCharCode = mUtf8Byte.t2.dt;
+    minUnicodeValue = 0x80;
   } else if (mUtf8Byte.t3.ck == 0xe) {
     extraBytes = 2;
     mBuiltCharCode = mUtf8Byte.t3.dt;
+    minUnicodeValue = 0x800;
   } else if (mUtf8Byte.t4.ck == 0x1e) {
     extraBytes = 3;
     mBuiltCharCode = mUtf8Byte.t4.dt;
+    minUnicodeValue = 0x10000;
   } else {
     raiseError();
   } // if
@@ -141,12 +146,12 @@ void Utf8::main() {
 
     // amend the built value
     mBuiltCharCode = (mBuiltCharCode << 6) | mUtf8Byte.dt.dt;
-
-    // if mBuiltCharCode is still zero by this point, it isn't minimally encoded
-    if (mBuiltCharCode == 0) {
-      raiseError();
-    } // if
   } // for
+
+  if (mBuiltCharCode < minUnicodeValue) {
+    // the value was not minimally encoded
+    raiseError();
+  }
 
   // I've finished building it if execution makes it here
   mDecodingStatus = MATCH;

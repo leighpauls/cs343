@@ -1,0 +1,52 @@
+Script started on Sun 22 Sep 2013 09:38:09 PM EDT
+ljhpauls@linux028:~/class/cs343/assignment_1$ sh -x q3_build_and_run.sh
++ make utf8
+make: `utf8' is up to date.
++ g++ q3utf8_gen.cc -o utf8_gen
++ echo running mine...
+running mine...
++ ./utf8_gen
++ ./utf8
++ cat mine.out
+0x23 : valid 0x23
+0x23 : valid 0x23. Extra characters 0x23
+0xd790 : valid 0x5d0
+0xd7 : invalid
+0xc2a3 : valid 0xa3
+ : Warning! Blank line.
+0xb0 : invalid
+0xe0e3 : invalid
+0xe98080 : valid 0x9000
+0xe98080 : valid 0x9000. Extra characters 0xfff8
+0xe09390 : invalid
+0xff : invalid. Extra characters 0x9a84
+0xf09089 : invalid
+0xf0908980 : valid 0x10240
+0x1 : valid 0x1
++ echo runnig theirs...
+runnig theirs...
++ ./utf8_gen
++ ./utf864
++ cat theirs.out
+0x23 : valid 0x23
+0x23 : valid 0x23. Extra characters 0x23
+0xd790 : valid 0x5d0
+0xd7 : invalid
+0xc2a3 : valid 0xa3
+ : Warning! Blank line.
+0xb0 : invalid
+0xe0e3 : invalid
+0xe98080 : valid 0x9000
+0xe98080 : valid 0x9000. Extra characters 0xfff8
+0xe09390 : invalid
+0xff : invalid. Extra characters 0x9a84
+0xf09089 : invalid
+0xf0908980 : valid 0x10240
+0x1 : valid 0x1
++ echo errors shown here... (no output means no failures)
+errors shown here... (no output means no failures)
++ diff -C 2 mine.out theirs.out
++ rm mine.out theirs.out
+ljhpauls@linux028:~/class/cs343/assignment_1$ exit
+
+Script done on Sun 22 Sep 2013 09:38:18 PM EDT

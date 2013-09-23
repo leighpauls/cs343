@@ -1,6 +1,10 @@
 #include <iostream>
 using namespace std;
 
+/**
+ * Taken from the assignement to generate test data for q3
+ */
+
 int main() {
     char bytes[] = {
 	0x23, '\n',					// valid

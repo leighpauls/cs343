@@ -20,7 +20,8 @@ EXEC00 = resumption
 OBJECTS4 = q2noresumption.o
 EXEC4 = noresumption
 
-OBJECTS5 = q3coroutine.o
+Q3HEADERS = q3utf8decoder.h
+OBJECTS5 = q3coroutine.o q3utf8decoder.o
 EXEC5 = utf8
 
 OBJECTS = ${OBJECTS1} ${OBJECTS2} ${OBJECTS3} ${OBJECTS4} ${OBJECTS5}
@@ -60,7 +61,7 @@ ${EXEC00} : ${OBJECTS00}
 ${EXEC4} : ${OBJECTS4}
 	g++ ${CXXFLAGS} $^ -o $@
 
-q3%.o : q3%.cc
+q3%.o : q3%.cc ${Q3HEADERS}
 	${CXX} -c $< -o $@
 
 ${EXEC5} : ${OBJECTS5}

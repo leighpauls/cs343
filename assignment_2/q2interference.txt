@@ -1,0 +1,68 @@
+Part 2(A):
+
+Script started on Sat 05 Oct 2013 03:24:51 PM EDT
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:18499863
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:19863977
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:18894691
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:19786972
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:19690235
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:17563632
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:19770847
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:20000000
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:19194742
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ ./iterations
+shared:16127130
+leigh@leigh-VirtualBox:~/class/cs343/assignment_2$ exit
+
+Script done on Sat 05 Oct 2013 03:26:29 PM EDT
+
+
+Part 2(B):
+No, there is no reason why all 10 runs from either version must produce the same result. As the multiprocessor version shows, the 2 tasks are frequently pre-empted and resumed in such a way that can cause one task to get an old value, be pre-empted, the other task changes the value somewhat, then the first task is resumed, and writes a value of 1 plus the old value it is holding over the value modified by the second task.
+The exact time when the tasks are pre-empted for eachother (either by the OS scheduler or by tge uC++ scheduler) is non-deterministic, so these overwritten changes can happen is different frequencies over different runs of the same program.
+
+Part 2(C):
+The largest possible value is 20000000, since there will only ever be 20000000 increment operations executed, independant of how the value is or isn't overwritten.
+
+The smallest possible value is 2, for any input argument. Assume N is the argument, the inside of the loop compiles to 3 commands (GET, MODIFY, and SET), and we have 2 threads A and B. One possibe scenario is:
+- A runs first, run's it's first GET (value 0), then is pre-empted for B.
+- B runs all but one iteration, getting pre-empted immediately before its Nth GET
+- A runs its first MODIFY and SET. Setting the value to 1. B pre-empts.
+- B runs its Nth GET (1), A pre-empts
+- A runs to completion.
+- B runs its last MODIFY AND SET, leaving the value at 2
+
+
+Part 2(D):
+Even though the uniprocessor version finished with a perfect result of 20000000 every time, it could have also "lost" cycles in the same way that the multiprocessor version did. The reason why it didn't is that the uC++ task scheduler does not pre-empt as aggresively as the Linux process scheduler, so it was far less likely to occur.

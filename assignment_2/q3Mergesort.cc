@@ -7,8 +7,11 @@ Mergesort<T>::Mergesort(
     T values[],
     unsigned int low,
     unsigned int high,
-    unsigned int depth)
-    : mValues(values), mLow(low), mHigh(high), mDepth(depth) {
+    unsigned int depth) {
+  mValues = values;
+  mLow = low;
+  mHigh = high;
+  mDepth = depth;
 }
 
 template <typename T>
@@ -69,6 +72,7 @@ template <typename T>
 void Mergesort<T>::sequentialSort(
     unsigned int low,
     unsigned int high) {
+  verify();
   if (high - low <= 1) {
     // empty or single-item lists are already sorted
     return;

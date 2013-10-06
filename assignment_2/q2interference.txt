@@ -55,7 +55,7 @@ The exact time when the tasks are pre-empted for eachother (either by the OS sch
 Part 2(C):
 The largest possible value is 20000000, since there will only ever be 20000000 increment operations executed, independant of how the value is or isn't overwritten.
 
-The smallest possible value is 2, for any input argument. Assume N is the argument, the inside of the loop compiles to 3 commands (GET, MODIFY, and SET), and we have 2 threads A and B. One possibe scenario is:
+The smallest possible value is 2. Assume N is the argument, the inside of the loop compiles to 3 commands (GET, MODIFY, and SET), and we have 2 threads A and B. One possibe scenario is:
 - A runs first, run's it's first GET (value 0), then is pre-empted for B.
 - B runs all but one iteration, getting pre-empted immediately before its Nth GET
 - A runs its first MODIFY and SET. Setting the value to 1. B pre-empts.

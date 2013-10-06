@@ -1,5 +1,10 @@
 #!/usr/bun/env python
 
+#
+# Tests over a decent enough range of seeds over the valid player range that 
+# most normal cases should be covered
+#
+
 import subprocess
 import sys
 
@@ -12,7 +17,7 @@ def compare_for_seed(players, seed):
     good_output = run_cmd("./hotpotato_64", players, seed)
     test_output = run_cmd("./hotpotato", players, seed)
     if good_output == test_output:
-        print players, ",  ", seed, " Matches!"
+        # this test case passed
         return True
     else:
         print players, ",  ", seed, " failed!"
@@ -27,6 +32,7 @@ def run_range():
         for players in xrange(2, 21):
             if not compare_for_seed(players, seed):
                 return
+    print "All tests passed!"
 
 
 if __name__ == "__main__":

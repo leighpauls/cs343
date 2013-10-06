@@ -11,7 +11,11 @@ Potato::Potato(unsigned int maxTicks) {
 
 void Potato::reset(unsigned int maxTicks) {
   mTicksRemaining = (rand() % maxTicks) + 1;
-  cout<<"  POTATO will go off after "<<mTicksRemaining<<" tosses"<<endl;
+  cout<<"  POTATO will go off after "<<mTicksRemaining<<" toss";
+  if (mTicksRemaining != 1) {
+    cout<<"es";
+  }
+  cout<<endl;
 }
 
 bool Potato::countdown() {

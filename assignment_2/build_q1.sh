@@ -1,5 +1,5 @@
 #~/bin/sh
-
+set -e
 cd ~/class/cs343/assignment_2/
 make hotpotato
-./hotpotato 5
+python testq1.py

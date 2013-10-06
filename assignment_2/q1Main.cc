@@ -7,27 +7,23 @@
 
 using namespace std;
 
-void uMain::main() {
-  unsigned int numPlayers;
-  srand(getpid());
-  stringstream ss;
+void usageAndExit(char* execName) {
+  cout<<"Usage: "<<execName
+        <<" number-of-players (between 2 and 20) [ random-seed ]"
+        <<endl;
+  exit(1);
+}
 
-  switch (argc) {
-    case 3:
-      // TODO: verify a valid int
-      ss<<argv[2];
-      int seed;
-      ss>>seed;
-      srand(seed);
-    case 2:
-      // TODO: verify a valid int greater than 1
-      ss<<argv[1];
-      ss>>numPlayers;
-      break;
-    default:
-      cout<<"Invalid args, expected `hotpotato players [seed]'"<<endl;
-      exit(1);
+void uMain::main() {
+  if (argc != 2 && argc != 3) {
+    usageAndExit(argv[0]);
   }
+
+  unsigned int numPlayers = atoi(argv[1]);
+  if (numPlayers < 2 || numPlayers > 20) {
+    usageAndExit(argv[0]);
+  }
+  srand((argc == 3) ? atoi(argv[2]) : getpid());
 
   Player::PlayerList gamePlayers;
   Player::PlayerList allPlayers;

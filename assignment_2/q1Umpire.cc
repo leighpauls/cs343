@@ -15,12 +15,18 @@ void Umpire::main() {
   cout<<mPlayers.size()<<" players in the match"<<endl;
   Potato potato;
   int setNum = 1;
-  while (mPlayers.size() > 1) {
+
+  for (;;) {
     // pick a player give the potato to initially
     cout<<"Set "<<setNum<<":\tU";
     mPlayers[rand() % mPlayers.size()]->toss(potato);
+    if (mPlayers.size() == 1) {
+      break;
+    }
     // I've got the potato back, reset it
     potato.reset();
+    setNum++;
   }
+
   cout<<mPlayers[0]->getId()<<" wins the Match!"<<endl;
 }

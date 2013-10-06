@@ -1,0 +1,140 @@
+Script started on Sun 06 Oct 2013 06:39:33 PM EDT
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ make clean
+rm -f *.d *.o hotpotato mergesort				 ImplType
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ make hotpotato
+echo "IMPLTYPE=int" > ImplType
+u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Main.o q1Main.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Player.o q1Player.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Umpire.o q1Umpire.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Potato.o q1Potato.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Catching.o q1Catching.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"  q1Main.o q1Player.o q1Umpire.o q1Potato.o q1Catching.o -o hotpotato
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ ./hotpotato 5 0
+5 players in the match
+  POTATO will go off after 4 tosses
+Set 1:	U -> 1 -> 2 -> 0 -> 3 is eliminated
+  POTATO will go off after 6 tosses
+Set 2:	U -> 2 -> 0 -> 1 -> 2 -> 4 -> 2 is eliminated
+  POTATO will go off after 10 tosses
+Set 3:	U -> 4 -> 1 -> 0 -> 1 -> 4 -> 0 -> 4 -> 1 -> 4 -> 0 is eliminated
+  POTATO will go off after 3 tosses
+Set 4:	U -> 1 -> 4 -> 1 is eliminated
+4 wins the Match!
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ ./hotpotato_64 5 0
+5 players in the match
+  POTATO will go off after 4 tosses
+Set 1:	U -> 1 -> 2 -> 0 -> 3 is eliminated
+  POTATO will go off after 6 tosses
+Set 2:	U -> 2 -> 0 -> 1 -> 2 -> 4 -> 2 is eliminated
+  POTATO will go off after 10 tosses
+Set 3:	U -> 4 -> 1 -> 0 -> 1 -> 4 -> 0 -> 4 -> 1 -> 4 -> 0 is eliminated
+  POTATO will go off after 3 tosses
+Set 4:	U -> 1 -> 4 -> 1 is eliminated
+4 wins the Match!
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ cat testq1.py 
+#!/usr/bun/env python
+
+#
+# Tests over a decent enough range of seeds over the valid player range that 
+# most normal cases should be covered
+#
+
+import subprocess
+import sys
+
+def run_cmd(command, players, seed):
+    cmd = [command, str(players), str(seed)]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE).communicate()[0]
+    return output
+
+def compare_for_seed(players, seed):
+    good_output = run_cmd("./hotpotato_64", players, seed)
+    test_output = run_cmd("./hotpotato", players, seed)
+    if good_output == test_output:
+        # this test case passed
+        return True
+    else:
+        print players, ",  ", seed, " failed!"
+        print "good:----------------------------------------"
+        print good_output
+        print "bad:-----------------------------------------"
+        print test_output
+        return False
+
+def run_range():
+    for seed in xrange(0, 200):
+        for players in xrange(2, 21):
+            if not compare_for_seed(players, seed):
+                return
+    print "All tests passed!"
+
+
+if __name__ == "__main__":
+    run_range()
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ python testq1.py 
+All tests passed!
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ ./hotpotato -1
+Usage: ./hotpotato number-of-players (between 2 and 20) [ random-seed ]
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ ./hotpotato 20
+20 players in the match
+  POTATO will go off after 8 tosses
+Set 1:	U -> 16 -> 3 -> 12 -> 14 -> 15 -> 7 -> 12 -> 1 is eliminated
+  POTATO will go off after 2 tosses
+Set 2:	U -> 19 -> 15 is eliminated
+  POTATO will go off after 1 toss
+Set 3:	U -> 16 is eliminated
+  POTATO will go off after 10 tosses
+Set 4:	U -> 8 -> 0 -> 7 -> 18 -> 19 -> 3 -> 7 -> 11 -> 0 -> 10 is eliminated
+  POTATO will go off after 3 tosses
+Set 5:	U -> 14 -> 0 -> 2 is eliminated
+  POTATO will go off after 6 tosses
+Set 6:	U -> 6 -> 17 -> 13 -> 11 -> 4 -> 3 is eliminated
+  POTATO will go off after 2 tosses
+Set 7:	U -> 11 -> 12 is eliminated
+  POTATO will go off after 4 tosses
+Set 8:	U -> 18 -> 11 -> 14 -> 13 is eliminated
+  POTATO will go off after 3 tosses
+Set 9:	U -> 8 -> 5 -> 0 is eliminated
+  POTATO will go off after 10 tosses
+Set 10:	U -> 4 -> 11 -> 8 -> 9 -> 8 -> 18 -> 14 -> 19 -> 6 -> 17 is eliminated
+  POTATO will go off after 6 tosses
+Set 11:	U -> 8 -> 19 -> 11 -> 7 -> 19 -> 14 is eliminated
+  POTATO will go off after 5 tosses
+Set 12:	U -> 11 -> 5 -> 7 -> 9 -> 6 is eliminated
+  POTATO will go off after 4 tosses
+Set 13:	U -> 19 -> 4 -> 19 -> 5 is eliminated
+  POTATO will go off after 2 tosses
+Set 14:	U -> 18 -> 4 is eliminated
+  POTATO will go off after 6 tosses
+Set 15:	U -> 19 -> 9 -> 11 -> 18 -> 8 -> 19 is eliminated
+  POTATO will go off after 1 toss
+Set 16:	U -> 9 is eliminated
+  POTATO will go off after 4 tosses
+Set 17:	U -> 18 -> 8 -> 7 -> 18 is eliminated
+  POTATO will go off after 9 tosses
+Set 18:	U -> 11 -> 7 -> 11 -> 7 -> 11 -> 8 -> 7 -> 11 -> 8 is eliminated
+  POTATO will go off after 4 tosses
+Set 19:	U -> 11 -> 7 -> 11 -> 7 is eliminated
+11 wins the Match!
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ ./hotpotato
+Usage: ./hotpotato number-of-players (between 2 and 20) [ random-seed ]
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ exit
+exit
+
+Script done on Sun 06 Oct 2013 06:42:18 PM EDT

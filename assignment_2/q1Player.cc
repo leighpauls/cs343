@@ -28,7 +28,7 @@ void Player::removeSelf() {
   }
 }
 
-void Player::doMain() {
+void Player::main() {
   for (;;) {
     cout<<" -> "<<mId;
     if (mPotato->countdown()) {

@@ -1,6 +1,5 @@
 #pragma once
 #include "q1Potato.h"
-#include "q1Catching.h"
 
 #include <vector>
 
@@ -8,7 +7,7 @@ using namespace std;
 
 _Coroutine Umpire;
 
-_Coroutine Player : public Catching {
+_Coroutine Player {
 public:
   typedef vector<Player*> PlayerList;
   Player(Umpire& umpire, unsigned int id, PlayerList& players);
@@ -27,6 +26,6 @@ private:
   void removeSelf();
 
 protected:
-  void doMain();
+  void main();
 };
 

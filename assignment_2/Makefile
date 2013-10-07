@@ -5,7 +5,7 @@ CXX = u++						# compiler
 CXXFLAGS = -g -multi -Wall -Wno-unused-label -MMD ${OPT} -DTYPE="${TYPE}" # compiler flags
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
 
-OBJECTS1 = q1Main.o q1Player.o q1Umpire.o q1Potato.o q1Catching.o
+OBJECTS1 = q1Main.o q1Player.o q1Umpire.o q1Potato.o
 EXEC1 = hotpotato
 
 OBJECTS3 = q3Mergesort.o q3Main.o q3ValueGenerator.o

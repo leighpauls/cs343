@@ -13,9 +13,7 @@ u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Umpire
 uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
 u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Potato.o q1Potato.cc
 uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
-u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"    -c -o q1Catching.o q1Catching.cc
-uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
-u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"  q1Main.o q1Player.o q1Umpire.o q1Potato.o q1Catching.o -o hotpotato
+u++						 -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="int"  q1Main.o q1Player.o q1Umpire.o q1Potato.o -o hotpotato
 uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
 
 ljhpauls@linux032:~/class/cs343/assignment_2$ ./hotpotato 5 0

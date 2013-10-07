@@ -1,0 +1,63 @@
+================================================================
+EXPERIMENT OUTPUT:
+================================================================
+
+Script started on Mon 07 Oct 2013 01:57:23 AM EDT
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ make mergesort
+make: `mergesort' is up to date.
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ cat size.in 
+80000000
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ time -p 
+real 19.09
+user 18.72
+sys 0.41
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ time -p ./mergesort size.in -2
+real 10.67
+user 19.09
+sys 0.43
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ time -p ./mergesort size.in -4
+real 6.57
+user 19.79
+sys 0.44
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ time -p ./mergesort size.in -8
+real 4.84
+user 21.66
+sys 0.39
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ time -p ./mergesort size.in -16
+real 3.97
+user 24.87
+sys 0.40
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ time -p ./mergesort size.in -32
+real 3.95
+user 37.94
+sys 0.68
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ time -p ./mergesort size.in -64
+real 5.84
+user 214.58
+sys 1.89
+
+ljhpauls@linux032:~/class/cs343/assignment_2$ exit
+exit
+
+Script done on Mon 07 Oct 2013 01:59:31 AM EDT
+
+================================================================
+OBSERVATIONS:
+================================================================
+Up to 16 processors, adding more processors noticeably decreases the real completion time of the sort. However, after 4 processors, there is a noticeable diminishing return between processors added, and real time decrease. 32 Processors shows no real time benefit over 16, and 64 processors is much worse.
+The user time consumed is roughly constant below 8 processors, but gets geometrically higher after 16.
+
+================================================================
+SPECULATIONS:
+================================================================
+This experiment was run on a 6 CPU machine, so in theory the fastest real time and the most efficient user time usage should have been at 6 processors. However, the real time usage at 16 processors was faster than at 8 processors. One possible explanation for this is that since these are actually kernel threads, as opposed to dedicated CPUs, the threads will spend a considerable amount of time in the OS's "ready queue". By having more threads than CPUs, it becomes more likely for one of the threads from this program to be at the front of that queue (as opposed to some other program's thread) when the scheduler pre-empts, which will lead to this process using a greater fraction of the physical CPU's time.
+The increase of user time with the increase in processors can be explained by the fact that swapping threads is an overhead-heavy operation, so more of the processors' time is spent context switching and less of it is spent sorting.

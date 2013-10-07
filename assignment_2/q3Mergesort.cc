@@ -1,5 +1,6 @@
 #include "q3Mergesort.h"
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 
@@ -41,6 +42,7 @@ Mergesort<T>::~Mergesort() {
 
 template <typename T>
 void Mergesort<T>::main() {
+  verify();
   if (mHigh - mLow <= 1) {
     // empty or single-item lists are already sorted
     return;
@@ -94,7 +96,7 @@ template <typename T>
 void Mergesort<T>::sequentialSort(
     unsigned int low,
     unsigned int high) {
-  // verify();
+  verify();
   if (high - low <= 1) {
     // empty or single-item lists are already sorted
     return;

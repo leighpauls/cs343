@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <cmath>
 
 #include "q3Mergesort.h"
 #include "q3ValueGenerator.h"
@@ -22,9 +23,9 @@ void printArray(ostream* output, TYPE* values, unsigned int len) {
   (*output)<<endl;
 }
 
-void doSorting(ValueGenerator& valueGen, ostream* output, unsigned int depth) {
+void doSorting(ValueGenerator& valueGen, ostream* output, unsigned int processors) {
   // create extra processors for depth
-  uProcessor p[depth - 1] __attribute__(( unused ));
+  uProcessor p[processors - 1] __attribute__(( unused ));
   for (;;) {
     unsigned int numValues;
     try {
@@ -36,6 +37,7 @@ void doSorting(ValueGenerator& valueGen, ostream* output, unsigned int depth) {
     TYPE* values = valueGen.getValues();
     printArray(output, values, numValues);
     // sort the data
+    unsigned int depth = log2(processors);
     {
       Mergesort<int> sorter(values, 0, numValues, depth);
     }

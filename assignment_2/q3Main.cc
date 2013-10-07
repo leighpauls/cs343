@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "q3Mergesort.h"
+#include "q3ValueGenerator.h"
 
 using namespace std;
 
@@ -11,46 +12,69 @@ unsigned int uDefaultStackSize() {
     return 512 * 1000;        // set task stack-size to 512K
 }
 
-void uMain::main() {
-  // use "processors" kernel threads
-  unsigned int depth = 2;
-  uProcessor p[ depth - 1 ] __attribute__(( unused ));
-  if (argc < 2) {
-    throw runtime_error("no input file");
+void printArray(ostream* output, TYPE* values, unsigned int len) {
+  if (output == NULL) {
+    return;
   }
-
-  ifstream inputFile(argv[1]);
-
-  if (!inputFile.is_open()) {
-    throw runtime_error("couldn't open input file");
+  for (unsigned int i = 0; i < len; ++i) {
+    (*output)<<values[i]<<" ";
   }
+  (*output)<<endl;
+}
 
-  // while I've still got lists to sort
+void doSorting(ValueGenerator& valueGen, ostream* output, unsigned int depth) {
+  // create extra processors for depth
+  uProcessor p[depth - 1] __attribute__(( unused ));
   for (;;) {
-    // get the values of the list
     unsigned int numValues;
-    inputFile>>numValues;
-    if (inputFile.eof()) {
-      return;
+    try {
+      numValues = valueGen.listLen();
+    } catch (ValueGenerator::EndOfFileException) {
+      break;
     }
-    int* values = new int[numValues];
-    cout<<"source:";
-    for (unsigned int i = 0; i < numValues; ++i) {
-      inputFile>>values[i];
-      cout<<" "<<values[i];
-    }
-    cout<<endl;
 
-    // Sort the list
+    TYPE* values = valueGen.getValues();
+    printArray(output, values, numValues);
+    // sort the data
     {
       Mergesort<int> sorter(values, 0, numValues, depth);
     }
-
-    cout<<"result:";
-    for (unsigned int i = 0; i < numValues; ++i) {
-      cout<<" "<<values[i];
+    printArray(output, values, numValues);
+    if (output != NULL) {
+      (*output)<<endl;
     }
-    cout<<endl;
+
     delete [] values;
+  }
+}
+
+void uMain::main() {
+  try {
+    if (argc == 2) {
+      ValuesFromFile values(argv[1]);
+      doSorting(values, &cout, 1);
+    } else if (argc == 3) {
+      if (argv[2][0] == '-') {
+        // treat 2nd arg as a negative number of cpu's
+        int depth = -atoi(argv[2]);
+        DefaultValues values(argv[1]);
+        doSorting(values, NULL, depth);
+      } else {
+        // treat 2nd arg as an output filename
+        ValuesFromFile values(argv[1]);
+        ofstream output(argv[2]);
+        if (!output.is_open()) {
+          throw runtime_error("unable to open output file");
+        }
+        doSorting(values, &output, 1);
+      }
+    } else {
+      stringstream ss;
+      ss<<"Usage: "<<argv[0]<<" unsorted-file [ sorted-file | -depth (> 0) ]";
+      throw runtime_error(ss.str());
+    }
+  } catch (runtime_error e) {
+    // TODO: remove
+    cout<<"LEIGHPAULS ERROR:"<<e.what()<<endl;
   }
 }

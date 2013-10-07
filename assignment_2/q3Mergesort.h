@@ -7,10 +7,20 @@ public:
       unsigned int high,
       unsigned int depth);
 
+  ~Mergesort();
 private:
+  T* mValues;
   unsigned int mLow, mHigh;
   unsigned int mDepth;
-  T* mValues;
+  T* mBuffer;
+  bool mOwner;
+
+  Mergesort(
+      T values[],
+      unsigned int low,
+      unsigned int high,
+      unsigned int depth,
+      T buffer[]);
 
   void main();
   void sequentialSort(unsigned int low, unsigned int high);

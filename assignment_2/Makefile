@@ -8,7 +8,7 @@ MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
 OBJECTS1 = q1Main.o q1Player.o q1Umpire.o q1Potato.o q1Catching.o
 EXEC1 = hotpotato
 
-OBJECTS3 = q3Mergesort.o q3Main.o
+OBJECTS3 = q3Mergesort.o q3Main.o q3ValueGenerator.o
 EXEC3 = mergesort
 
 OBJECTS = ${OBJECTS1} ${OBJECTS3}			# all object files

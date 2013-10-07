@@ -65,9 +65,6 @@ void uMain::main() {
         // treat 2nd arg as an output filename
         ValuesFromFile values(argv[1]);
         ofstream output(argv[2]);
-        if (!output.is_open()) {
-          throw runtime_error("unable to open output file");
-        }
         doSorting(values, &output, 1);
       }
     } else {
@@ -77,6 +74,6 @@ void uMain::main() {
     }
   } catch (runtime_error e) {
     // TODO: remove
-    cout<<"LEIGHPAULS ERROR:"<<e.what()<<endl;
+    cout<<e.what()<<endl;
   }
 }

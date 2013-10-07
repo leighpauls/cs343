@@ -40,9 +40,3 @@ public:
 protected:
   virtual void main();
 };
-
-class CantOpenInputFileError : public runtime_error {
- public:
-  CantOpenInputFileError()
-      : runtime_error("Can't read input file") {}
-};

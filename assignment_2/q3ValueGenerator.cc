@@ -1,4 +1,8 @@
+#include <iostream>
+
 #include "q3ValueGenerator.h"
+
+using namespace std;
 
 unsigned int ValueGenerator::listLen() {
   if (mListLen < 0) {
@@ -16,9 +20,6 @@ TYPE* ValueGenerator::getValues() {
 
 ValuesFromFile::ValuesFromFile(char* filename)
     : ValueGenerator(), mInputFile(filename) {
-  if (!mInputFile.is_open()) {
-    throw CantOpenInputFileError();
-  }
   // get the first list len
   resume();
 }
@@ -39,9 +40,6 @@ void ValuesFromFile::main() {
 
 DefaultValues::DefaultValues(char *filename) {
   ifstream inputFile(filename);
-  if (!inputFile.is_open()) {
-    throw CantOpenInputFileError();
-  }
   inputFile>>mListLen;
 }
 

@@ -46,7 +46,7 @@ void doSorting(
     // sort the data
     unsigned int depth = log2(processors);
     {
-      Mergesort<int> sorter(values, 0, numValues, depth);
+      Mergesort<TYPE> sorter(values, 0, numValues, depth);
     }
 
     // output the results

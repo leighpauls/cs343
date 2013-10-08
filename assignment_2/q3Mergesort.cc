@@ -106,4 +106,4 @@ void Mergesort<T>::sequentialSort(
   mergeLists(low, midPoint, high);
 }
 
-template _Task Mergesort<int>;
+template _Task Mergesort<TYPE>;

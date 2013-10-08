@@ -13,6 +13,7 @@ unsigned int uDefaultStackSize() {
     return 512 * 1000;        // set task stack-size to 512K
 }
 
+/// Convenience function for printing an array of values
 void printArray(ostream* output, TYPE* values, unsigned int len) {
   if (output == NULL) {
     return;
@@ -23,10 +24,14 @@ void printArray(ostream* output, TYPE* values, unsigned int len) {
   (*output)<<endl;
 }
 
-void doSorting(ValueGenerator& valueGen, ostream* output, unsigned int processors) {
+void doSorting(
+    ValueGenerator& valueGen,
+    ostream* output,
+    unsigned int processors) {
   // create extra processors for depth
   uProcessor p[processors - 1] __attribute__(( unused ));
   for (;;) {
+    // find out if there are more values, and how long the next list is
     unsigned int numValues;
     try {
       numValues = valueGen.listLen();
@@ -34,46 +39,48 @@ void doSorting(ValueGenerator& valueGen, ostream* output, unsigned int processor
       break;
     }
 
+    // read the actual values
     TYPE* values = valueGen.getValues();
     printArray(output, values, numValues);
+
     // sort the data
     unsigned int depth = log2(processors);
     {
       Mergesort<int> sorter(values, 0, numValues, depth);
     }
+
+    // output the results
     printArray(output, values, numValues);
     if (output != NULL) {
       (*output)<<endl;
     }
 
+    // free memory
     delete [] values;
   }
 }
 
 void uMain::main() {
-  try {
-    if (argc == 2) {
-      ValuesFromFile values(argv[1]);
-      doSorting(values, &cout, 1);
-    } else if (argc == 3) {
-      if (argv[2][0] == '-') {
-        // treat 2nd arg as a negative number of cpu's
-        int depth = -atoi(argv[2]);
-        DefaultValues values(argv[1]);
-        doSorting(values, NULL, depth);
-      } else {
-        // treat 2nd arg as an output filename
-        ValuesFromFile values(argv[1]);
-        ofstream output(argv[2]);
-        doSorting(values, &output, 1);
-      }
+  if (argc == 2) {
+    // 1st mode, printing to the terminal
+    ValuesFromFile values(argv[1]);
+    doSorting(values, &cout, 1);
+  } else if (argc == 3) {
+    if (argv[2][0] == '-') {
+      // 2nd mode
+      // treat 2nd arg as a negative number of cpu's
+      int depth = -atoi(argv[2]);
+      DefaultValues values(argv[1]);
+      doSorting(values, NULL, depth);
     } else {
-      stringstream ss;
-      ss<<"Usage: "<<argv[0]<<" unsorted-file [ sorted-file | -depth (> 0) ]";
-      throw runtime_error(ss.str());
+      // 1st mode, printing to a file
+      // treat 2nd arg as an output filename
+      ValuesFromFile values(argv[1]);
+      ofstream output(argv[2]);
+      doSorting(values, &output, 1);
     }
-  } catch (runtime_error e) {
-    // TODO: remove
-    cout<<e.what()<<endl;
+  } else {
+    // this must be an error
+    cout<<"Usage: "<<argv[0]<<" unsorted-file [ sorted-file | -depth (> 0) ]";
   }
 }

@@ -19,21 +19,23 @@ void uMain::main() {
     usageAndExit(argv[0]);
   }
 
+  // get the number of players and a possible seed
   unsigned int numPlayers = atoi(argv[1]);
   if (numPlayers < 2 || numPlayers > 20) {
     usageAndExit(argv[0]);
   }
   srand((argc == 3) ? atoi(argv[2]) : getpid());
 
+  // 2 lists: 1 of all the players, and one of the players remaining in the game
   Player::PlayerList gamePlayers;
   Player::PlayerList allPlayers;
   Umpire umpire(gamePlayers);
-
   for (unsigned int i = 0; i < numPlayers; ++i) {
     allPlayers.push_back(new Player(umpire, i, gamePlayers));
     gamePlayers.push_back(allPlayers[i]);
   }
 
+  // Start the match
   umpire.set();
 
   // free memory

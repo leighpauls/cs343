@@ -15,11 +15,13 @@ unsigned int Player::getId() {
   return mId;
 }
 
+/// Receive the potato, and resume this player's coroutine
 void Player::toss(Potato &potato) {
   mPotato = &potato;
   resume();
 }
 
+/// Removes this player from the game
 void Player::removeSelf() {
   for (unsigned int i = 0; i < mPlayers.size(); i++) {
     if (mPlayers[i]->getId() == mId) {
@@ -32,11 +34,12 @@ void Player::main() {
   for (;;) {
     cout<<" -> "<<mId;
     if (mPotato->countdown()) {
+      // I've been eliminated from the game
       cout<<" is eliminated"<<endl;
       removeSelf();
       mUmpire->set();
     } else {
-      // pick a player to throw it to
+      // I'm still in the game, pick a player to throw it to
       int numPlayersLeft = mPlayers.size();
       Player* next;
       do {

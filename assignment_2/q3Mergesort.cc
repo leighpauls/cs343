@@ -61,9 +61,7 @@ void Mergesort<T>::main() {
   mergeLists(mLow, midPoint, mHigh);
 }
 
-/**
- * Merge 2 sorted lists
- */
+/// Merge 2 sorted lists
 template <typename T>
 void Mergesort<T>::mergeLists(
     unsigned int low,
@@ -92,6 +90,7 @@ void Mergesort<T>::mergeLists(
   memcpy(&mValues[destIdx], &mBuffer[highIdx], (high - highIdx) * sizeof(T));
 }
 
+/// recursively sort
 template <typename T>
 void Mergesort<T>::sequentialSort(
     unsigned int low,
@@ -101,7 +100,6 @@ void Mergesort<T>::sequentialSort(
     // empty or single-item lists are already sorted
     return;
   }
-  // TODO: check stack size
   unsigned int midPoint = (low + high) / 2;
   sequentialSort(low, midPoint);
   sequentialSort(midPoint, high);

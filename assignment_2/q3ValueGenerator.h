@@ -5,9 +5,7 @@
 
 using namespace std;
 
-/**
- * Absract generator for input values
- */
+/// Absract generator for input values
 _Coroutine ValueGenerator {
 public:
   ValueGenerator() {};
@@ -25,6 +23,7 @@ protected:
   TYPE* mNewValues;
 };
 
+/// Read a lists of values from a file, for "mode 1"
 _Coroutine ValuesFromFile : public ValueGenerator {
 public:
   ValuesFromFile(char *filename);
@@ -34,6 +33,7 @@ private:
   ifstream mInputFile;
 };
 
+/// Make a reverse list of values from a file for "mode 2"
 _Coroutine DefaultValues : public ValueGenerator {
 public:
   DefaultValues(char *filename);

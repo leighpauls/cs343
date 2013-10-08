@@ -9,6 +9,10 @@ Potato::Potato(unsigned int maxTicks) {
   reset(maxTicks);
 }
 
+/**
+ * Set the potato and print the intro for the round
+ * @param maxTicks set the timer to to a value between 1 and maxticks inclusive
+ */
 void Potato::reset(unsigned int maxTicks) {
   mTicksRemaining = (rand() % maxTicks) + 1;
   cout<<"  POTATO will go off after "<<mTicksRemaining<<" toss";
@@ -18,10 +22,10 @@ void Potato::reset(unsigned int maxTicks) {
   cout<<endl;
 }
 
+/**
+ * decrement the time remaining
+ * @return true iff the potato has gone off
+ */
 bool Potato::countdown() {
-  if (mTicksRemaining == 0) {
-    throw runtime_error("Tried to countdown on a finished potato");
-  }
-
   return (--mTicksRemaining) == 0;
 }

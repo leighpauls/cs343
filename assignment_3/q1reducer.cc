@@ -53,7 +53,9 @@ void Reducer::main() {
 
 bool Reducer::tryConsumeEvent() {
   // Wait for something to do
+  // osacquire(cout)<<"Reducer "<<mId<<" about to take signal"<<endl;
   mSignal->P();
+  // osacquire(cout)<<"Reducer "<<mId<<" has signal"<<endl;
 
   for (vector<Mapper*>::iterator it = mMappers.begin();
        it != mMappers.end();
@@ -63,6 +65,7 @@ bool Reducer::tryConsumeEvent() {
       if (tryReduce(*it)) {
         return true;
       }
+      // osacquire(cout)<<"Couldn't reduce"<<endl;
     } catch (KVQueue::EmptyAndClosed& e) {
       // remove the mapper
       mMappers.erase(it);
@@ -88,11 +91,11 @@ bool Reducer::tryConsumeEvent() {
 bool Reducer::tryReduce(Mapper* mapper) {
   Mapper::KeyValue pair;
   if (mapper->mQueue->peekFront(&pair) ||
-      (hash(pair.key) % mNumReducers != (unsigned int) mId)) {
+      (hash(pair.key) % mNumReducers) != (unsigned int) mId) {
     // I can't handle an element from this queue
     return false;
   }
-  // this values belongs to me, take it away from the others
+  // this value belongs to me, take it away from the others
   mapper->mQueue->popFront();
   mWordCounts[pair.key] += pair.value;
   return true;

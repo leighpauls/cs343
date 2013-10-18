@@ -81,11 +81,11 @@ void uMain::main() {
   }
 
   // wait for all tasks to complete
-  for (unsigned int i = 0; i < mappers.size(); ++i) {
-    delete mappers[i];
-  }
   for (unsigned int i = 0; i < reducers.size(); ++i) {
     delete reducers[i];
+  }
+  for (unsigned int i = 0; i < mappers.size(); ++i) {
+    delete mappers[i];
   }
 
   cout<<"Finished! Semaphore counter: "<<signal.counter()<<endl;

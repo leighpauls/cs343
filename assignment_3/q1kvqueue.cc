@@ -1,5 +1,10 @@
 #include "q1kvqueue.h"
 
+#include <iostream>
+#include <uC++.h>
+
+using namespace std;
+
 KVQueue::KVQueue(int size)
     : mOpenPositions(size),
       mFilledPositions(0),
@@ -31,22 +36,6 @@ void KVQueue::pushBack(const Mapper::KeyValue& item) {
 Mapper::KeyValue KVQueue::popFront() {
   // reserve an item to take
   mFilledPositions.P();
-  return popFrontWithP();
-}
-
-int KVQueue::peekFront(Mapper::KeyValue* val) throw(EmptyAndClosed) {
-  if (!mFilledPositions.TryP()) {
-    if (mClosed) {
-      mTimesPeekedEmptyAndClosed++;
-      throw EmptyAndClosed(mTimesPeekedEmptyAndClosed);
-    }
-    return -1;
-  }
-  *val = popFrontWithP();
-  return 0;
-}
-
-Mapper::KeyValue KVQueue::popFrontWithP() {
   // lock removing from the buffer
   mPopLock.P();
   // get the value
@@ -60,6 +49,22 @@ Mapper::KeyValue KVQueue::popFrontWithP() {
   // make the new space available
   mOpenPositions.V();
   return res;
+}
+
+int KVQueue::peekFront(Mapper::KeyValue* val) throw(EmptyAndClosed) {
+  if (!mFilledPositions.TryP()) {
+    if (mClosed) {
+      mTimesPeekedEmptyAndClosed++;
+      throw EmptyAndClosed(mTimesPeekedEmptyAndClosed);
+    }
+    return -1;
+  }
+  mPopLock.P();
+  *val = mBuffer[mFront];
+  mPopLock.V();
+  // don't actually consume the value
+  mFilledPositions.V();
+  return 0;
 }
 
 void KVQueue::close() {

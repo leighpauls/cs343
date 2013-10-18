@@ -24,13 +24,18 @@ void Mapper::main() {
   ifstream inputFile(mFilename.c_str());
   string word;
   for (;;) {
+    // try to read a word
     inputFile>>word;
     if (inputFile.eof()) {
       break;
     }
+    // make the new mapping
     KeyValue kv(word, 1);
     mQueue->pushBack(kv);
+    // Tell the reducers that there's a new value
     mSignal->V();
   }
   mQueue->close();
+  // tell the reducers that a mapper has closed
+  mSignal->V();
 }

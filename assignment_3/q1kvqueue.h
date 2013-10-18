@@ -6,8 +6,8 @@
 class KVQueue {
  public:
   struct EmptyAndClosed {
-    int num_thrown;
-    EmptyAndClosed(int num_thrown) : num_thrown(num_thrown) {}
+    int numThrown;
+    EmptyAndClosed(int numThrown) : numThrown(numThrown) {}
   };
   KVQueue(int size);
   virtual ~KVQueue();

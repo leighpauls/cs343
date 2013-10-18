@@ -30,6 +30,6 @@ private:
   vector<Mapper*> mMappers;
   map<string, int> mWordCounts;
 
-  void reduce(Mapper::KeyValue& pair);
-  void printCounts();
+  bool tryConsumeEvent();
+  bool tryReduce(Mapper* mapper);
 };

@@ -34,36 +34,38 @@ void KVQueue::pushBack(const Mapper::KeyValue& item) {
 }
 
 Mapper::KeyValue KVQueue::popFront() {
-  // reserve an item to take
-  mFilledPositions.P();
   // lock removing from the buffer
   mPopLock.P();
+  // reserve an item to take
+  mFilledPositions.P();
   // get the value
   Mapper::KeyValue res = mBuffer[mFront];
   mFront += 1;
   if (mFront >= mSize) {
     mFront = 0;
   }
-  // unlock the buffer
-  mPopLock.V();
   // make the new space available
   mOpenPositions.V();
+  // unlock the buffer
+  mPopLock.V();
   return res;
 }
 
 int KVQueue::peekFront(Mapper::KeyValue* val) throw(EmptyAndClosed) {
+  mPopLock.P();
   if (!mFilledPositions.TryP()) {
     if (mClosed) {
       mTimesPeekedEmptyAndClosed++;
+      mPopLock.V();
       throw EmptyAndClosed(mTimesPeekedEmptyAndClosed);
     }
+    mPopLock.V();
     return -1;
   }
-  mPopLock.P();
   *val = mBuffer[mFront];
-  mPopLock.V();
   // don't actually consume the value
   mFilledPositions.V();
+  mPopLock.V();
   return 0;
 }
 

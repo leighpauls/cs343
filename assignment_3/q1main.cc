@@ -9,6 +9,7 @@
 #include "q1reducer.h"
 
 #include "q1sortmapper.h"
+#include "q1sortreducer.h"
 
 using namespace std;
 
@@ -82,8 +83,7 @@ void uMain::main() {
     if (sortBufferSize == 0) {
       reducers.push_back(new Reducer(i, numReducers, &signal, mappers));
     } else {
-      // TODO
-      *((int*)NULL) = 5;
+      reducers.push_back(new SortReducer(i, numReducers, &signal, mappers));
     }
   }
 

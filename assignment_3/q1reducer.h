@@ -22,7 +22,7 @@ public:
   vector<Mapper*>& getMappers();
 
 protected:
-  void main();
+  virtual void main();
 
 private:
   int mId, mNumReducers;

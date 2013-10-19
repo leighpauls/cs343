@@ -23,7 +23,7 @@ public:
   KVQueue* mQueue;
 
 protected:
-  void main();
+  virtual void main();
 
 private:
   string mFilename;

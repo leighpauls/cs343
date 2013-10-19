@@ -6,7 +6,7 @@
 using namespace std;
 
 Mapper::Mapper(const string& filename, int queueLen, uSemaphore* signal)
-    : mQueue(new KVQueue(queueLen)), mFilename(filename), mSignal(signal) { }
+    : mQueue(new KVQueue(queueLen)), mFilename(filename), mSignal(signal) {}
 
 Mapper::~Mapper() {
   delete mQueue;

@@ -8,6 +8,8 @@
 #include "q1mapper.h"
 #include "q1reducer.h"
 
+#include "q1sortmapper.h"
+
 using namespace std;
 
 void printUsage(string execName) {
@@ -64,10 +66,15 @@ void uMain::main() {
     if (sortBufferSize == 0) {
       mappers.push_back(new Mapper(filename, queueLength, &signal));
     } else {
-      // TODO
-      *((int*)NULL) = 5;
+      mappers.push_back(new SortMapper(
+          filename,
+          queueLength,
+          sortBufferSize,
+          &signal));
     }
   }
+
+  closedir(dir);
 
   // make the reducer tasks
   vector<Reducer*> reducers;

@@ -63,7 +63,6 @@ void uMain::main() {
     string filename = inputDir;
     filename += "/";
     filename += curEnt->d_name;
-    osacquire(cout)<<"reading file: "<<filename<<endl;
     if (sortBufferSize == 0) {
       mappers.push_back(new Mapper(filename, queueLength, &signal));
     } else {

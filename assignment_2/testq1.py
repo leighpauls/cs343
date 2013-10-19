@@ -1,4 +1,4 @@
-#!/usr/bun/env python
+#!/usr/bin/env python
 
 #
 # Tests over a decent enough range of seeds over the valid player range that 

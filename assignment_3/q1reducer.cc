@@ -47,7 +47,7 @@ void Reducer::main() {
   for (map<string, int>::iterator it = mWordCounts.begin();
        it != mWordCounts.end();
        it++) {
-    osacquire(cout)<<it->first<<": "<<it->second<<endl;
+    osacquire(cout)<<it->first<<" : "<<it->second<<endl;
   }
 }
 

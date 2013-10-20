@@ -90,7 +90,7 @@ void SortReducer::tryFlushWords(
       }
     }
     // this word is <= all words to come, so print it
-    osacquire(cout)<<it->first<<": "<<it->second<<endl;
+    osacquire(cout)<<it->first<<" : "<<it->second<<endl;
     ++it;
   }
 finishedWords:

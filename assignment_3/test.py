@@ -47,9 +47,9 @@ def compare(num_reducers, queue_length, sort_buffer_size):
 
 def test_range():
     print "starting tests..."
-    for num_reducers in xrange(1, 10):
-        for queue_len in xrange(1, 10):
-            for sort_buffer_size in xrange(0, 10):
+    for num_reducers in xrange(1, 5):
+        for queue_len in xrange(1, 5):
+            for sort_buffer_size in xrange(0, 5):
                 if not compare(num_reducers, queue_len, sort_buffer_size):
                     exit(1)
     print "All tests passed!"

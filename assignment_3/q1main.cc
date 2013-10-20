@@ -61,7 +61,9 @@ void uMain::main() {
       continue;
     }
     string filename = inputDir;
-    filename += "/";
+    if (filename[filename.size() - 1] != '/') {
+      filename += "/";
+    }
     filename += curEnt->d_name;
     if (sortBufferSize == 0) {
       mappers.push_back(new Mapper(filename, queueLength, &signal));

@@ -4,7 +4,7 @@ import subprocess
 
 def run_cmd(command, num_reducers, queue_length, sort_buffer_size):
     cmd = [command,
-           "test_words",
+           "test_words/",
            str(num_reducers),
            str(queue_length),
            str(sort_buffer_size)]
@@ -49,6 +49,7 @@ def compare(num_reducers, queue_length, sort_buffer_size):
         return False
 
 def test_range():
+    print "starting tests..."
     for num_reducers in xrange(1, 10):
         for queue_len in xrange(1, 10):
             for sort_buffer_size in xrange(0, 10):

@@ -66,9 +66,9 @@ bool SortMapper::readWord(
   }
   // increment or create the count for that word
   buffer[curWord] += 1;
-  if (buffer.size() >= (unsigned int) mBufferSize) {
+  if (buffer.size() > (unsigned int) mBufferSize) {
     // I've tried to put too many elements in the buffer
-    buffer.erase(buffer.rend()->first);
+    buffer.erase(buffer.rbegin()->first);
   }
   return false;
 }

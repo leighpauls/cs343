@@ -4,21 +4,18 @@ import subprocess
 
 def run_cmd(command, num_reducers, queue_length, sort_buffer_size):
     cmd = [command,
-           "test_words/",
+           "random_words",
            str(num_reducers),
            str(queue_length),
            str(sort_buffer_size)]
     output = subprocess.Popen(
         cmd,
         stdout=subprocess.PIPE).communicate()[0]
-    # print "output is: ", output, " from ", cmd
     return output
 
 def word_counts_from(word_count_string):
     res = {}
-    # print "reading from ", word_count_string
     for line in word_count_string.split("\n")[:-2]:
-        # print "reading ", line
         word, count = line.split(" : ")
         res[word] = int(count)
     return res

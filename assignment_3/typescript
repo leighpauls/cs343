@@ -1,0 +1,190 @@
+Script started on Sun 20 Oct 2013 11:35:24 PM EDT
+bash: /opt/ros/hydro/setup.bash: No such file or directory
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ wc test_words/
+wc: test_words/: Is a directory
+      0       0       0 test_words/
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ wc test_words/*
+ 0  0  0 test_words/empty.txt
+ 1  0  1 test_words/empty.txt~
+ 3  3  6 test_words/words1.txt
+ 3  3  6 test_words/words2.txt
+ 7  6 13 total
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ wor[K
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ 
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ 
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ make clean
+rm -f *.d *.o wordcount
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ make wordcount
+u++ -g -multi -Wall -Wno-unused-label -MMD  -DTYPE=""   -c -o q1kvqueue.o q1kvqueue.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -multi -Wall -Wno-unused-label -MMD  -DTYPE=""   -c -o q1mapper.o q1mapper.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -multi -Wall -Wno-unused-label -MMD  -DTYPE=""   -c -o q1reducer.o q1reducer.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -multi -Wall -Wno-unused-label -MMD  -DTYPE=""   -c -o q1sortmapper.o q1sortmapper.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -multi -Wall -Wno-unused-label -MMD  -DTYPE=""   -c -o q1sortreducer.o q1sortreducer.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -multi -Wall -Wno-unused-label -MMD  -DTYPE=""   -c -o q1main.o q1main.cc
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -multi -Wall -Wno-unused-label -MMD  -DTYPE="" q1kvqueue.o q1mapper.o q1reducer.o q1sortmapper.o q1sortreducer.o q1main.o -o wordcount
+uC++ Version 6.0.0 (multiple processor) (debug) (no yield) (no verify) (no profile)
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ wc test_words/*
+ 0  0  0 test_words/empty.txt
+ 1  0  1 test_words/empty.txt~
+ 3  3  6 test_words/words1.txt
+ 3  3  6 test_words/words2.txt
+ 7  6 13 total
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ wordc.wordc/wordc[C[C[C[C[Count test_words/[K
+b : 2
+c : 2
+a : 1
+d : 1
+Finished! Semaphore counter: 0
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount test_words 1
+a : 1
+b : 2
+c : 2
+d : 1
+Finished! Semaphore counter: 0
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount test_words 1[K2
+a : 1
+c : 2
+b : 2
+d : 1
+Finished! Semaphore counter: 0
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount test_words 2 1
+a : 1
+c : 2
+b : 2
+d : 1
+Finished! Semaphore counter: 0
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount test_words 2 1[K2
+a : 1
+c : 2
+b : 2
+d : 1
+Finished! Semaphore counter: 0
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount test_words 2 2 1
+b : 2
+a : 1
+c : 2
+d : 1
+Finished! Semaphore counter: 0
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount test_words 2 2 1[K2
+b : 2
+a : 1
+c : 2
+d : 1
+Finished! Semaphore counter: 0
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount test_words 2 2 2[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K
+Usage: ./wordcount input-directory [ num-reducers ( > 0 ) [ queue-length ( > 0 ) [ sort-buffer-size ( >= 0 ) ] ] ]
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount invalid_file_anme[K[K[K[Kane[K[K[Kname
+Error! Cannot open directory "invalid_file_name"
+Usage: ./wordcount input-directory [ num-reducers ( > 0 ) [ queue-length ( > 0 ) [ sort-buffer-size ( >= 0 ) ] ] ]
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./wordcount invalid_file_name[K./wordcount invalid_file_name[Ktest_words 2 2 2[K[K[K[K[K-1
+Usage: ./wordcount input-directory [ num-reducers ( > 0 ) [ queue-length ( > 0 ) [ sort-buffer-size ( >= 0 ) ] ] ]
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ echo test.py[1P test.py[1P test.py[1P test.py[1P test.pyc test.pya test.pyt test.py[C[C[C[C[C[C[C[C
+#!/usr/bin/env python
+
+import subprocess
+
+def run_cmd(command, num_reducers, queue_length, sort_buffer_size):
+    cmd = [command,
+           "random_words",
+           str(num_reducers),
+           str(queue_length),
+           str(sort_buffer_size)]
+    output = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE).communicate()[0]
+    return output
+
+def word_counts_from(word_count_string):
+    res = {}
+    for line in word_count_string.split("\n")[:-2]:
+        word, count = line.split(" : ")
+        res[word] = int(count)
+    return res
+
+def compare(num_reducers, queue_length, sort_buffer_size):
+    good_raw_output = run_cmd(
+        "./wordcount_64",
+        num_reducers,
+        queue_length,
+        sort_buffer_size)
+    test_raw_output = run_cmd(
+        "./wordcount",
+        num_reducers,
+        queue_length,
+        sort_buffer_size)
+    good_word_count = word_counts_from(good_raw_output)
+    test_word_count = word_counts_from(test_raw_output)
+    if good_word_count == test_word_count:
+        return True
+    else:
+        print num_reducers, ',', queue_length, ',', sort_buffer_size, ' failed!'
+        print "good:---------------------------"
+        print good_word_count
+        print good_raw_output
+        print "bad:----------------------------"
+        print test_word_count
+        print test_raw_output
+        return False
+
+def test_range():
+    print "starting tests..."
+    for num_reducers in xrange(1, 5):
+        for queue_len in xrange(1, 5):
+            for sort_buffer_size in xrange(0, 5):
+                if not compare(num_reducers, queue_len, sort_buffer_size):
+                    exit(1)
+    print "All tests passed!"
+
+if __name__ == "__main__":
+    test_range()
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./test[K[K[K[K[K[Kwc radn[K[Kndom_words
+wc: random_words: Is a directory
+      0       0       0 random_words
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ wc random_words/*
+  47   47  454 random_words/gen_words0.txt
+  85   85  825 random_words/gen_words1.txt
+  50   50  482 random_words/gen_words2.txt
+  45   45  411 random_words/gen_words3.txt
+   3    3   25 random_words/gen_words4.txt
+   3    3   34 random_words/gen_words5.txt
+  30   30  275 random_words/gen_words6.txt
+  40   40  356 random_words/gen_words7.txt
+  36   36  335 random_words/gen_words8.txt
+   1    1    7 random_words/gen_words9.txt
+ 340  340 3204 total
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ ./test.py
+starting tests...
+All tests passed!
+//home/leigh/class/cs343/assignment_3
+leigh@leigh-VirtualBox:~/class/cs343/assignment_3$ exit
+exit
+
+Script done on Sun 20 Oct 2013 11:38:54 PM EDT

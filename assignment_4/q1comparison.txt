@@ -1,15 +1,25 @@
+PART A:
+The time output:
+
 ~/class/cs343/assignment_4 $ u++ q1.cc -o counter
 uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
-~/class/cs343/assignment_4 $ /usr/bin/time -p ./counter 10000000000
-0x63ac38 0x63ac3c
-real 10.37
-user 10.15
-sys 0.20
-~/class/cs343/assignment_4 $ u++ q1.cc -DPAD -o counter
+~/class/cs343/assignment_4 $ /usr/bin/time -p ./counter 1000000000
+0x642bf8 0x642bfc
+real 9.05
+user 9.04
+sys 0.01
+~/class/cs343/assignment_4 $ u++ q1.cc -o counter -DPAD
 uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
-~/class/cs343/assignment_4 $ /usr/bin/time -p ./counter 10000000000
-0x63ac40 0x63ac80
-real 11.23
-user 10.96
-sys 0.24
+~/class/cs343/assignment_4 $ /usr/bin/time -p ./counter 1000000000
+0x642c00 0x642c40
+real 7.01
+user 7.01
+sys 0.00
+~/class/cs343/assignment_4 $ 
 
+
+PART B:
+The program completes faster when padding is enabled because the 64 bit system's cache words only align to 64-bit boundries in virtual memory. Since the counters are located next to eachother in memeory, if they are not 64-bit aligned then one word will contains parts of both counters. Each time that one thread starts running, it must update that common word from the other thread, meaning that it needs to block while waiting for that word to be passed between the caches of the 2 cores.
+
+PART C:
+The C++ ostream "<<" operator isn't defined for any pointer types other than void pointers, all other types (including int pointers) are casted to a boolean, and will read as 0 or 1.

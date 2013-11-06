@@ -1,0 +1,15 @@
+~/class/cs343/assignment_4 $ u++ q1.cc -o counter
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+~/class/cs343/assignment_4 $ /usr/bin/time -p ./counter 10000000000
+0x63ac38 0x63ac3c
+real 10.37
+user 10.15
+sys 0.20
+~/class/cs343/assignment_4 $ u++ q1.cc -DPAD -o counter
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+~/class/cs343/assignment_4 $ /usr/bin/time -p ./counter 10000000000
+0x63ac40 0x63ac80
+real 11.23
+user 10.96
+sys 0.24
+

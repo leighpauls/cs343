@@ -1,5 +1,7 @@
 #pragma once
 
+#define SANTA_ID 0
+
 _Monitor Printer {                  // choose monitor or cormonitor
 public:
   enum States {
@@ -11,7 +13,7 @@ public:
     Consulting = 'C', DoneConsulting = 'c', // Santa, elves
     ConsultingFailed = 'X',                 // elf
   };
-  Printer( const unsigned int MAX_NUM_ELVES );
-  void print( unsigned int id, States state );
-  void print( unsigned int id, States state, unsigned int numBlocked );
+  Printer(const unsigned int MAX_NUM_ELVES);
+  void print(unsigned int id, States state);
+  void print(unsigned int id, States state, unsigned int numBlocked);
 };

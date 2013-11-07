@@ -4,7 +4,11 @@
 #include "q2Printer.h"
 
 _Task Santa {
-  // private members go here
 public:
   Santa(Workshop& wrk, Printer& prt);
+private:
+  void main();
+
+  Workshop& mWorkshop;
+  Printer& mPrinter;
 };

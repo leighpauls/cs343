@@ -5,8 +5,7 @@
 using namespace std;
 
 Printer::Printer(const unsigned int MAX_NUM_ELVES)
-    : NUM_ELVES(MAX_NUM_ELVES),
-      bufferFlushable(false) {
+    : NUM_ELVES(MAX_NUM_ELVES) {
   writeHeader();
 }
 
@@ -15,20 +14,22 @@ void Printer::print(unsigned int id, States state) {
   ss<<(char)state;
   if (state == Finished) {
     flushBuffer();
-    for (int i = 0; i < mPendingOutput.size(); ++i) {
+    for (unsigned int i = 0; i < mPendingOutput.size(); ++i) {
       mPendingOutput[i] = "...";
     }
     mPendingOutput[id] = ss.str();
     flushBuffer();
     return;
   }
-  addToBuffer(id, ss.str());
+  string s(ss.str());
+  addToBuffer(id, s);
 }
 
 void Printer::print(unsigned int id, States state, unsigned int numBlocked) {
   stringstream ss;
   ss<<(char)state<<" "<<numBlocked;
-  addToBuffer(id, ss.str());
+  string s(ss.str());
+  addToBuffer(id, s);
 }
 
 void Printer::addToBuffer(unsigned int id, string& val) {
@@ -39,9 +40,9 @@ void Printer::addToBuffer(unsigned int id, string& val) {
 }
 
 void Printer::flushBuffer() {
-  for (int id = 0; id < NUM_ELVES + 6l ++id) {
+  for (unsigned int id = 0; id < NUM_ELVES + 6; ++id) {
     if (mPendingOutput.count(id)) {
-      cout<<mPendingOutput;
+      cout<<mPendingOutput[id];
     }
     cout<<'\t';
   }

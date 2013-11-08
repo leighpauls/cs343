@@ -1,7 +1,7 @@
 #include "q2Elf.h"
-#include "MPRNG.h"
+#include "q2Yielder.h"
 
-Elf(
+Elf::Elf(
     unsigned int id,
     Workshop& wrk,
     Printer& prt,
@@ -14,7 +14,7 @@ Elf(
 void Elf::main() {
   randomYield(10);
   mPrinter.print(mId, Printer::Starting);
-  for (int i = 0; i < mNumconsultations; ++i) {
+  for (unsigned int i = 0; i < mNumConsultations; ++i) {
     randomYield(3);
     mPrinter.print(mId, Printer::Working);
     randomYield(5);

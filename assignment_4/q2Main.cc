@@ -2,6 +2,12 @@
 #include "q2Elf.h"
 #include "q2Santa.h"
 #include "q2Reindeer.h"
+#include "q2Yielder.h"
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
 
 void usageQuit(const char* cmd) {
   cout<<"Usage: "<<cmd
@@ -10,11 +16,11 @@ void usageQuit(const char* cmd) {
   exit(0);
 }
 
-int doConvert(const char* str, int minValue) {
+int doConvert(const char* str, int minValue, const char* cmd) {
   char* end;
   int res = strtol(str, &end, 10);
-  if ((cosnt char*)end == str || res < minValue) {
-    usageQuit();
+  if ((const char*)end == str || res < minValue) {
+    usageQuit(cmd);
   }
   return res;
 }
@@ -27,34 +33,43 @@ void uMain::main() {
   int numDeliveries = 3;
   switch (argc) {
     case 6:
-      numDeliveries = doConvert(argv[5], 0);
+      numDeliveries = doConvert(argv[5], 0, argv[0]);
     case 5:
-      numConsultations = doConvert(argv[4], 0);
+      numConsultations = doConvert(argv[4], 0, argv[0]);
     case 4:
-      seed = doConvert(argv[3], 1);
+      seed = doConvert(argv[3], 1, argv[0]);
     case 3:
-      numElves = doConvert(argv[2], 1);
+      numElves = doConvert(argv[2], 1, argv[0]);
     case 2:
-      reindeerBound = doConvert(argv[1], 1);
+      reindeerBound = doConvert(argv[1], 1, argv[0]);
       break;
     default:
-      usageMessage(argv[0]);
+      usageQuit(argv[0]);
   }
 
-  Printer printer;
+  seedRandom(seed);
+
+  Printer printer(numElves);
   Workshop workshop(printer, reindeerBound, numElves, numDeliveries);
-  {
-    Santa santa(workshop, printer);
-    vector<Elf> elves;
-    unsigned int curId = 1;
-    for (int i = 0; i < numElves; ++i) {
-      elves.push_back(Elf(curId, workshop, printer, numConsultations));
-      curId++;
-    }
-    vector<Reindeer> reindeer;
-    for (int i = 0; i < 5; ++i) {
-      reindeer.push_back(Reindeer(curId, workshop, printer, numDeliveries));
-      curId++;
-    }
+
+  Santa santa(workshop, printer);
+
+  unsigned int curId = 1;
+  vector<Elf*> elves;
+  for (int i = 0; i < numElves; ++i) {
+    elves.push_back(new Elf(curId, workshop, printer, numConsultations));
+    curId++;
+  }
+  vector<Reindeer*> reindeer;
+  for (int i = 0; i < 5; ++i) {
+    reindeer.push_back(new Reindeer(curId, workshop, printer, numDeliveries));
+    curId++;
+  }
+  // make it run to completion...
+  for (unsigned int i = 0; i < elves.size(); ++i) {
+    delete elves[i];
+  }
+  for (unsigned int i = 0; i < reindeer.size(); ++i) {
+    delete reindeer[i];
   }
 }

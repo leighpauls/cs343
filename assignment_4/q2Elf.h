@@ -2,8 +2,9 @@
 
 #include "q2Workshop.h"
 #include "q2Printer.h"
+#include "q2Yielder.h"
 
-_Task Elf {
+_Task Elf : public RandomYielder {
 public:
   enum {
     CONSULTING_GROUP_SIZE = 3, // number of elves for a consultation with Santa

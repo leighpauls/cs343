@@ -14,7 +14,7 @@ Workshop::Workshop(Printer &prt, unsigned int N, unsigned int E, unsigned int D)
 {}
 
 /// santa calls to nap; when Santa wakes status of next action
-Status Workshop::sleep() {
+Workshop::Status Workshop::sleep() {
   while (mReindeerWaiting < 5 && mElvesWaiting < 3) {
     // there's nothing to do yet, sleep...
     mPrinter.print(SANTA_ID, Printer::Blocked);
@@ -44,18 +44,16 @@ Status Workshop::sleep() {
 
   // Serving the elves
   mTimesReindeerServed = 0;
-  mConsultationSuccessful = true;
   for (int i = 0; i < 3; ++i) {
     // use signalBlock, to make sure that the elf reads the current value
     // of mConsultationsOver
     mWakeElves.signalBlock();
   }
-  mConsultationSuccessful = false;
   return Consulting;
 }
 
 /// reindeer call to deliver toys
-void deliver(unsigned int id) {
+void Workshop::deliver(unsigned int id) {
   mReindeerWaiting++;
   mWakeSanta.signal();
   // Wait for santa to start me
@@ -68,7 +66,7 @@ void deliver(unsigned int id) {
  * elves call to consult Santa,
  * @returns true => consultation successful, false => consultation failed
  */
-bool consult(unsigned int id) {
+bool Workshop::consult(unsigned int id) {
   if (mConsultationsOver) {
     return false;
   }
@@ -82,13 +80,13 @@ bool consult(unsigned int id) {
 }
 
 /// block Santa/elves until meeting over
-void doneConsulting(unsigned int id) {
+void Workshop::doneConsulting(unsigned int id) {
   mConsultersRemaining--;
   if (mConsultersRemaining == 0) {
     // I'm the last to complete the meeting, wake everyone else up
     while (!mConsultationComplete.empty()) {
       mConsultationComplete.signalBlock();
-      mConsiltersRemaining++;
+      mConsultersRemaining++;
     }
   } else {
     // I need to wait for the rest of the consultation to be done
@@ -99,13 +97,13 @@ void doneConsulting(unsigned int id) {
 }
 
 /// block Santa/reindeer until all toys are delivered
-void doneDelivering(unsigned int id) {
+void Workshop::doneDelivering(unsigned int id) {
   mDeliverersRemaining--;
   if (mDeliverersRemaining == 0) {
     // I'm the last to complete the delivery, wake everyone else up
     while (!mDeliveryComplete.empty()) {
       mDeliveryComplete.signalBlock();
-      mDelivererRemaining++;
+      mDeliverersRemaining++;
     }
   } else {
     // I need to wait for the rest of the delivery to complete
@@ -116,7 +114,7 @@ void doneDelivering(unsigned int id) {
 }
 
 /// elves call to indicate termination
-void termination(unsigned int id) {
+void Workshop::termination(unsigned int id) {
   mNumElvesWithConsultations--;
   mWakeSanta.signal();
 }

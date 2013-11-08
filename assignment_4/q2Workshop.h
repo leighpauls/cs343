@@ -31,4 +31,6 @@ private:
   unsigned int mTimesReindeerServed;
   unsigned int mConsultersRemaining, mDeliverersRemaining;
   bool mConsultationsOver;
+  uCondition mWakeSanta, mWakeElves, mWakeReindeer;
+  uCondition mConsultationComplete, mDeliveryComplete;
 };

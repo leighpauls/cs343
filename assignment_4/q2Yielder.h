@@ -1,4 +1,9 @@
 #pragma once
 
-void randomYield(unsigned int maxTimes);
 void seedRandom(unsigned int seed);
+
+_Task RandomYielder {
+public:
+  RandomYielder() {}
+  void randomYield(unsigned int maxTimes);
+};

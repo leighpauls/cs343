@@ -27,5 +27,5 @@ private:
   void writeHeader();
 
   const unsigned int NUM_ELVES;
-  Map<unsigned int, string> mPendingOutput;
+  map<unsigned int, string> mPendingOutput;
 };

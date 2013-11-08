@@ -2,8 +2,9 @@
 
 #include "q2Workshop.h"
 #include "q2Printer.h"
+#include "q2Yielder.h"
 
-_Task Reindeer {
+_Task Reindeer : public RandomYielder{
 public:
   enum {
     MAX_NUM_REINDEER = 5, // number of reindeer in system for delivering toys

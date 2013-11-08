@@ -13,11 +13,10 @@ MIN_ARG_VALUES = [1, 1, 1, 0, 0]
 MAX_ARG_VALUES = [10, 10, 3, 10, 10]
 
 def run_cmd(argValues):
-    # print "running for: ", argValues
     stringValues = [str(x) for x in argValues]
     cmd = ['./northpole'] + stringValues
-    output = subprocess.check_output(cmd)
-    # print output
+    if subprocess.check_call(cmd):
+        raise Exception(str(argValues) + " Failed!!!")
 
 def try_all_for_num_args(numArgs):
     """try all the argument combos within the range specified"""

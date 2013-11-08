@@ -3,7 +3,6 @@
 #include "q2Printer.h"
 
 _Monitor Workshop {
-  // private members go here
 public:
   enum Status { Consulting, Delivery, Done };
   /// printer, bound, elves, reindeer delivery
@@ -24,5 +23,12 @@ public:
   void doneDelivering(unsigned int id);
   /// elves call to indicate termination
   void termination(unsigned int id);
-};
 
+private:
+  Printer& mPrinter;
+  unsigned int mReindeerBound, mNumElvesWithConsultations, mNumDeliveries;
+  unsigned int mReindeerWaiting, mElvesWaiting;
+  unsigned int mTimesReindeerServed;
+  unsigned int mConsultersRemaining, mDeliverersRemaining;
+  bool mConsultationsOver;
+};

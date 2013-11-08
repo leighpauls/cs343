@@ -2,7 +2,11 @@
 
 #define SANTA_ID 0
 
-_Monitor Printer {                  // choose monitor or cormonitor
+#include <map>
+
+using namespace std;
+
+_Monitor Printer {
 public:
   enum States {
     Starting = 'S', Blocked = 'B', Unblocked = 'U', Finished = 'F', // general
@@ -16,4 +20,11 @@ public:
   Printer(const unsigned int MAX_NUM_ELVES);
   void print(unsigned int id, States state);
   void print(unsigned int id, States state, unsigned int numBlocked);
+
+private:
+  void addToBuffer(unsigned int id, string& val);
+  void flushBuffer();
+
+  const unsigned int NUM_ELVES;
+  Map<unsigned int, string> mPendingOutput;
 };

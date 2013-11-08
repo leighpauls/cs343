@@ -24,6 +24,7 @@ public:
 private:
   void addToBuffer(unsigned int id, string& val);
   void flushBuffer();
+  void writeHeader();
 
   const unsigned int NUM_ELVES;
   Map<unsigned int, string> mPendingOutput;

@@ -6,7 +6,9 @@ using namespace std;
 
 Printer::Printer(const unsigned int MAX_NUM_ELVES)
     : NUM_ELVES(MAX_NUM_ELVES),
-      bufferFlushable(false) {}
+      bufferFlushable(false) {
+  writeHeader();
+}
 
 void Printer::print(unsigned int id, States state) {
   stringstream ss;
@@ -56,6 +58,10 @@ void Printer::writeHeader() {
   }
   for (unsigned int i = 0; i < 5; ++i) {
     cout<<'D'<<curId<<'\t';
+  }
+  cout<<endl;
+  for (unsigned int i = 0; i < NUM_ELVES + 6; ++i) {
+    cout<<"--"<<'\t';
   }
   cout<<endl;
 }

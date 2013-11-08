@@ -15,7 +15,7 @@ MAX_ARG_VALUES = [10, 10, 3, 10, 10]
 def run_cmd(argValues):
     stringValues = [str(x) for x in argValues]
     cmd = ['./northpole'] + stringValues
-    if subprocess.check_call(cmd):
+    if subprocess.check_call(cmd, stdout=subprocess.PIPE):
         raise Exception(str(argValues) + " Failed!!!")
 
 def try_all_for_num_args(numArgs):

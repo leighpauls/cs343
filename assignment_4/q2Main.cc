@@ -42,6 +42,7 @@ void uMain::main() {
       numElves = doConvert(argv[2], 1, argv[0]);
     case 2:
       reindeerBound = doConvert(argv[1], 1, argv[0]);
+    case 1:
       break;
     default:
       usageQuit(argv[0]);

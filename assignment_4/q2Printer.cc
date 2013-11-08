@@ -14,7 +14,7 @@ void Printer::print(unsigned int id, States state) {
   ss<<(char)state;
   if (state == Finished) {
     flushBuffer();
-    for (unsigned int i = 0; i < mPendingOutput.size(); ++i) {
+    for (unsigned int i = 0; i < NUM_ELVES + 6; ++i) {
       mPendingOutput[i] = "...";
     }
     mPendingOutput[id] = ss.str();

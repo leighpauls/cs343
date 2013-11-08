@@ -16,18 +16,19 @@ Workshop::Workshop(Printer &prt, unsigned int N, unsigned int E, unsigned int D)
 /// santa calls to nap; when Santa wakes status of next action
 Workshop::Status Workshop::sleep() {
   while (mReindeerWaiting < 5 && mElvesWaiting < 3) {
-    // there's nothing to do yet, sleep...
     mPrinter.print(SANTA_ID, Printer::Blocked);
-    mWakeSanta.wait();
-    mPrinter.print(SANTA_ID, Printer::Unblocked);
     if (mNumElvesWithConsultations < 3) {
       // fewer than 3 elves will ever want consultation
       mConsultationsOver = true;
       while (!mWakeElves.empty()) {
         mWakeElves.signalBlock();
       }
-      return Done;
+      return Workshop::Done;
+    } else {
+      // there's nothing to do yet, sleep...
+      mWakeSanta.wait();
     }
+    mPrinter.print(SANTA_ID, Printer::Unblocked);
   }
 
   // Santa must have something to do at this point
@@ -39,17 +40,18 @@ Workshop::Status Workshop::sleep() {
     for (int i = 0; i < 5; i++) {
       mWakeReindeer.signal();
     }
-    return Delivery;
+    return Workshop::Delivery;
   }
 
   // Serving the elves
   mTimesReindeerServed = 0;
+  mElvesWaiting -= 3;
   for (int i = 0; i < 3; ++i) {
     // use signalBlock, to make sure that the elf reads the current value
     // of mConsultationsOver
     mWakeElves.signalBlock();
   }
-  return Consulting;
+  return Workshop::Consulting;
 }
 
 /// reindeer call to deliver toys
@@ -88,12 +90,14 @@ void Workshop::doneConsulting(unsigned int id) {
       mConsultationComplete.signalBlock();
       mConsultersRemaining++;
     }
+    mConsultersRemaining++;
   } else {
     // I need to wait for the rest of the consultation to be done
     mPrinter.print(id, Printer::Blocked, 4 - mConsultersRemaining);
     mConsultationComplete.wait();
     mPrinter.print(id, Printer::Unblocked, 4 - mConsultersRemaining);
   }
+  mWakeSanta.signal();
 }
 
 /// block Santa/reindeer until all toys are delivered
@@ -105,12 +109,14 @@ void Workshop::doneDelivering(unsigned int id) {
       mDeliveryComplete.signalBlock();
       mDeliverersRemaining++;
     }
+    mDeliverersRemaining++;
   } else {
     // I need to wait for the rest of the delivery to complete
     mPrinter.print(id, Printer::Blocked, 6 - mDeliverersRemaining);
     mDeliveryComplete.wait();
     mPrinter.print(id, Printer::Unblocked, 6 - mDeliverersRemaining);
   }
+  mWakeSanta.signal();
 }
 
 /// elves call to indicate termination

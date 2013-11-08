@@ -1,6 +1,7 @@
 
 CXX = u++
-CXXFLAGS = -g -multi -Wall -Wno-unused-label -MMD ${OPT}
+# CXXFLAGS = -g -multi -Wall -Wno-unused-label -MMD ${OPT}
+CXXFLAGS = -g -Wall -Wno-unused-label -MMD ${OPT}
 
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}
 

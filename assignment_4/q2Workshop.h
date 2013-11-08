@@ -26,7 +26,8 @@ public:
 
 private:
   Printer& mPrinter;
-  unsigned int mReindeerBound, mNumElvesWithConsultations, mNumDeliveries;
+  unsigned int mReindeerBound;
+  unsigned int mNumElvesWithConsultations, mNumDeliveriesRemaining;
   unsigned int mReindeerWaiting, mElvesWaiting;
   unsigned int mTimesReindeerServed;
   unsigned int mConsultersRemaining, mDeliverersRemaining;

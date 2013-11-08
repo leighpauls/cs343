@@ -4,20 +4,19 @@ Workshop::Workshop(Printer &prt, unsigned int N, unsigned int E, unsigned int D)
     : mPrinter(prt),
       mReindeerBound(N),
       mNumElvesWithConsultations(E),
-      mNumDeliveries(D),
+      mNumDeliveriesRemaining(D),
       mReindeerWaiting(0),
       mElvesWaiting(0),
       mTimesReindeerServed(0),
       mConsultersRemaining(4), // elves + santa
       mDeliverersRemaining(6), // reindeer + santa
-      mConsultationsOver(false)
-{}
+      mConsultationsOver(false) {}
 
 /// santa calls to nap; when Santa wakes status of next action
 Workshop::Status Workshop::sleep() {
   while (mReindeerWaiting < 5 && mElvesWaiting < 3) {
     mPrinter.print(SANTA_ID, Printer::Blocked);
-    if (mNumElvesWithConsultations < 3) {
+    if (mNumElvesWithConsultations < 3 && mNumDeliveriesRemaining == 0) {
       // fewer than 3 elves will ever want consultation
       mConsultationsOver = true;
       while (!mWakeElves.empty()) {
@@ -110,6 +109,7 @@ void Workshop::doneDelivering(unsigned int id) {
       mDeliverersRemaining++;
     }
     mDeliverersRemaining++;
+    mNumDeliveriesRemaining--;
   } else {
     // I need to wait for the rest of the delivery to complete
     mPrinter.print(id, Printer::Blocked, 6 - mDeliverersRemaining);

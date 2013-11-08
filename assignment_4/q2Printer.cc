@@ -40,29 +40,40 @@ void Printer::addToBuffer(unsigned int id, string& val) {
 }
 
 void Printer::flushBuffer() {
+  // find the highest id
+  unsigned int highest = 0;
   for (unsigned int id = 0; id < NUM_ELVES + 6; ++id) {
+    if (mPendingOutput.count(id)) {
+      highest = id;
+    }
+  }
+  for (unsigned int id = 0; id <= highest; ++id) {
     if (mPendingOutput.count(id)) {
       cout<<mPendingOutput[id];
     }
-    cout<<'\t';
+    if (id < highest) {
+      cout<<'\t';
+    }
   }
   cout<<endl;
   mPendingOutput.clear();
 }
 
 void Printer::writeHeader() {
-  cout<<"Sa"<<'\t';
+  cout<<"Sa";
   unsigned int curId = 1;
   for (unsigned int i = 0; i < NUM_ELVES; ++i) {
-    cout<<'E'<<curId<<'\t';
+    cout<<"\tE"<<curId;
     ++curId;
   }
   for (unsigned int i = 0; i < 5; ++i) {
-    cout<<'D'<<curId<<'\t';
+    cout<<"\tD"<<curId;
+    curId++;
   }
   cout<<endl;
-  for (unsigned int i = 0; i < NUM_ELVES + 6; ++i) {
-    cout<<"--"<<'\t';
+  cout<<"--";
+  for (unsigned int i = 1; i < NUM_ELVES + 6; ++i) {
+    cout<<"\t--";
   }
   cout<<endl;
 }

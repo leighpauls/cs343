@@ -53,24 +53,27 @@ void uMain::main() {
   Printer printer(numElves);
   Workshop workshop(printer, reindeerBound, numElves, numDeliveries);
 
-  Santa santa(workshop, printer);
+  {
+    Santa santa(workshop, printer);
 
-  unsigned int curId = 1;
-  vector<Elf*> elves;
-  for (int i = 0; i < numElves; ++i) {
-    elves.push_back(new Elf(curId, workshop, printer, numConsultations));
-    curId++;
+    unsigned int curId = 1;
+    vector<Elf*> elves;
+    for (int i = 0; i < numElves; ++i) {
+      elves.push_back(new Elf(curId, workshop, printer, numConsultations));
+      curId++;
+    }
+    vector<Reindeer*> reindeer;
+    for (int i = 0; i < 5; ++i) {
+      reindeer.push_back(new Reindeer(curId, workshop, printer, numDeliveries));
+      curId++;
+    }
+    // make it run to completion...
+    for (unsigned int i = 0; i < elves.size(); ++i) {
+      delete elves[i];
+    }
+    for (unsigned int i = 0; i < reindeer.size(); ++i) {
+      delete reindeer[i];
+    }
   }
-  vector<Reindeer*> reindeer;
-  for (int i = 0; i < 5; ++i) {
-    reindeer.push_back(new Reindeer(curId, workshop, printer, numDeliveries));
-    curId++;
-  }
-  // make it run to completion...
-  for (unsigned int i = 0; i < elves.size(); ++i) {
-    delete elves[i];
-  }
-  for (unsigned int i = 0; i < reindeer.size(); ++i) {
-    delete reindeer[i];
-  }
+  cout<<"Workshop closed"<<endl;
 }

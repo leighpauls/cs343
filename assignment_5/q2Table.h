@@ -1,9 +1,12 @@
+#pragma once
 
 /// internal scheduling monitor solution
 #if defined( TABLETYPE_INT )
+#include <vector>
+using namespace std;
 _Monitor Table {
-  // private declarations for this kind of table
-  
+  vector<bool> mForkStates;
+  vector<uCondition> mWaitingForFork;
 
 /// internal scheduling monitor solution with barging
 #elif defined( TABLETYPE_INTB )
@@ -27,8 +30,10 @@ _Task Table {
 #endif
 
   // common declarations
+  bool philosopherCanPickUp(unsigned int philId);
+  Printer &mPrinter;
 public:                             // common interface
-  Table( const unsigned int NoOfPhil, Printer &prt );
+  Table( const unsigned int sumOfPhil, Printer &prt );
   void pickup( unsigned int id );
   void putdown( unsigned int id );
 };

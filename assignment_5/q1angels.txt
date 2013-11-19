@@ -1,0 +1,2 @@
+This is an example of deadlock. Assume that each angel can see all 3 other angels. Each angel is blocked until there are 0 angels looking at it, but the only way that an angel can stop looking at another angel, is for it to become unblocked and move it's face/eyes.
+This assumes that angels do not use cooperation to freeze/unfreeze eachother, but rather another being in space (and time) signals to the angels that they are being/not being looked at.

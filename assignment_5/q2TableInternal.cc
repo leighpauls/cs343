@@ -1,37 +1,43 @@
 #include "q2Table.h"
+#include "q2Printer.h"
 
 Table::Table(const unsigned int numOfPhil, Printer &prt) :
     mForkStates(numOfPhil, false),
-    mWaitingForFork(numOfPhil, uCondition()),
-    mPrinter(prt) {}
-
-/// helper function to check both forks
-bool Table::philosopherCanPickUp(unsigned int philId) {
-  unsigned int left = id;
-  unsigned int right = id + 1;
-  if (right >= mForkStates.size()) {
-    right = 0;
+    mPrinter(prt) {
+  for (int i = 0; i < numOfPhil; ++i) {
+    mWaitingForFork.push_back(new uCondition());
   }
-  return !(mForkStates[left] || mForkStates[right]);
+}
+
+Table::~Table() {
+  for (int i = 0; i < mWaitingForFork.size(); ++i) {
+    delete mWaitingForFork[i];
+  }
 }
 
 void Table::pickup(unsigned int id) {
   // block if I can't pick up immediately
-  if (!philosopherCanPickUp(id)) {
+  unsigned int left = id;
+  unsigned int right = (id + 1) % mForkStates.size();
+  if (mForkStates[left] || mForkStates[right]) {
     mPrinter.print(id, Philosopher::Waiting, left, right);
-    mWaitingForFork[id].wait();
+    mWaitingForFork[id]->wait();
   }
   mForkStates[left] = true;
   mForkStates[right] = true;
 }
 
+/// helper function to check both forks
+bool Table::philosopherCanPickUp(unsigned int philId) {
+  unsigned int left = philId;
+  unsigned int right = (philId + 1) % mForkStates.size();
+  return !(mForkStates[left] || mForkStates[right]);
+}
+
 void Table::putdown(unsigned int id) {
   // put down the forks
   unsigned int leftFork = id;
-  unsigned int rightFork = id + 1;
-  if (rightFork >= mForkStates.size()) {
-    right = 0;
-  }
+  unsigned int rightFork = (id + 1) % mForkStates.size();
   mForkStates[leftFork] = false;
   mForkStates[rightFork] = false;
 
@@ -41,11 +47,11 @@ void Table::putdown(unsigned int id) {
     leftPhilosopher = mWaitingForFork.size() - 1;
   }
   if (philosopherCanPickUp(leftPhilosopher)) {
-    mWaitingForFork[leftPhilosopher].signal();
+    mWaitingForFork[leftPhilosopher]->signal();
   }
 
   unsigned int rightPhilosopher = rightFork;
   if (philosopherCanPickUp(rightPhilosopher)) {
-    mWaitingForFork[rightPhilosopher].signal();
+    mWaitingForFork[rightPhilosopher]->signal();
   }
 }

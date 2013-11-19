@@ -1,6 +1,11 @@
 #pragma once
 
-_Comonitor Printer {
+#include "q2Philosopher.h"
+
+#include <map>
+using namespace std;
+
+_Cormonitor Printer {
 public:
   Printer(unsigned int numPhil);
   void print(unsigned int id, Philosopher::States state);

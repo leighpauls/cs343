@@ -1,8 +1,10 @@
+
 #include "q2Philosopher.h"
 #include "q2Table.h"
 #include "q2Printer.h"
 
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -26,7 +28,7 @@ int doConvert(const char* str, int minValue, const char* cmd) {
 void uMain::main() {
   unsigned int numPhil = 5;
   unsigned int numNoodles = 30;
-  unsigned int seed = getPid();
+  unsigned int seed = getpid();
 
   switch (argc) {
     case 4:
@@ -35,24 +37,25 @@ void uMain::main() {
       numNoodles = doConvert(argv[2], 1, argv[0]);
     case 2:
       numPhil = doConvert(argv[1], 2, argv[0]);
+    case 1:
       break;
     default:
-      usageQuite(argv[0]);
+      usageQuit(argv[0]);
   }
 
   seedRandom(seed);
 
   Printer printer(numPhil);
-  Table table(numPhile, printer);
+  Table table(numPhil, printer);
 
   Philosopher* phils[numPhil];
-  for (unsigned int id = 0; id < numPhils; ++i) {
-    phils[i] = new Philosopher(id, numNoodles, table, printer);
+  for (unsigned int id = 0; id < numPhil; ++id) {
+    phils[id] = new Philosopher(id, numNoodles, table, printer);
   }
 
   // wait for all the philosophers to finish
-  for (unsigned int id = 0; id < numPhils; ++i) {
-    delete phils[i];
+  for (unsigned int id = 0; id < numPhil; ++id) {
+    delete phils[id];
   }
 
   cout<<"***********************"<<endl;

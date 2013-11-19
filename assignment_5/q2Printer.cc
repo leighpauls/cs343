@@ -1,14 +1,29 @@
 #include "q2Printer.h"
 #include <iostream>
+#include <sstream>
 
-Printer::Printer(unsigned int NoOfPhil)
+Printer::Printer(unsigned int numPhil) : mNumPhil(numPhil) {
+  // print the banner
+  resume();
+}
 
-void Printer::print(unsigned int id, Philosopher::States state);
+void Printer::print(unsigned int id, Philosopher::States state) {
+  mNextId = id;
+  mNextState = state;
+  resume();
+}
+
 void Printer::print(
     unsigned int id,
     Philosopher::States state,
     unsigned int bite,
-    unsigned int noodles);
+    unsigned int noodles) {
+  mNextId = id;
+  mNextState = state;
+  mNextLeftNum = bite;
+  mNextRightNum = noodles;
+  resume();
+}
 
 void Printer::main() {
   // called from constructor, print the banner
@@ -16,7 +31,7 @@ void Printer::main() {
   for (unsigned int curId = 0; curId < mNumPhil; curId++) {
     ss<<"Phil"<<curId;
     mBuffer[curId] = ss.str();
-    ss.str(""):
+    ss.str("");
   }
   flushBuffer();
   for (;;) {
@@ -38,7 +53,7 @@ void Printer::printFinished() {
     if (curId != mNextState) {
       mBuffer[curId] = string("...");
     } else {
-      mBuffer[curId] = string(Philosopher::Finished);
+      mBuffer[curId] = Philosopher::Finished;
     }
   }
   flushBuffer();
@@ -49,14 +64,14 @@ void Printer::printState() {
     // something is currently in this position
     flushBuffer();
   }
-  if (mState == Philosopher::Waiting || mState == Philosopher::Eating) {
+  if (mNextState == Philosopher::Waiting || mNextState == Philosopher::Eating) {
     stringstream ss;
-    ss<<mState<<mNextLeftNum<<","<<mNextRightNum;
+    ss<<mNextState<<mNextLeftNum<<","<<mNextRightNum;
     mBuffer[mNextId] = ss.str();
     return;
   }
 
-  mBuffer[mNextId] = string(mState);
+  mBuffer[mNextId] = mNextState;
 }
 
 void Printer::flushBuffer() {

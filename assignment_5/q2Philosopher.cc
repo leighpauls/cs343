@@ -1,5 +1,6 @@
 #include "q2Philosopher.h"
 #include "MPRNG.h"
+#include "q2Printer.h"
 
 Philosopher::Philosopher(
     unsigned int id,
@@ -13,7 +14,7 @@ void seedRandom(unsigned int seed) {
   sRandom.seed(seed);
 }
 
-void Pilosopher::main() {
+void Philosopher::main() {
   for (;;) {
     mPrinter.print(mId, Hungry);
     doYield(sRandom(4));
@@ -21,10 +22,10 @@ void Pilosopher::main() {
 
     unsigned int numEaten = min(sRandom(1, 5), mNoodlesRemaining);
     mNoodlesRemaining -= numEaten;
-    mPrinter.print(mId, Eating, numEaten, mNoodelsRemaining);
+    mPrinter.print(mId, Eating, numEaten, mNoodlesRemaining);
 
     doYield(sRandom(4));
-    mTable.putDown(mId);
+    mTable.putdown(mId);
 
     if (mNoodlesRemaining == 0) {
       break;
@@ -36,7 +37,7 @@ void Pilosopher::main() {
   mPrinter.print(mId, Finished);
 }
 
-void Pilosopher::doYield(unsigned int times) {
+void Philosopher::doYield(unsigned int times) {
   for (unsigned int i = 0; i < times; i++) {
     yield();
   }

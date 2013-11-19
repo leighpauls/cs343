@@ -1,7 +1,8 @@
 #pragma once
 
 #include "q2Table.h"
-#include "q2Printer.h"
+
+_Cormonitor Printer;
 
 _Task Philosopher {
 public:

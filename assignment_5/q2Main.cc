@@ -1,0 +1,60 @@
+#include "q2Philosopher.h"
+#include "q2Table.h"
+#include "q2Printer.h"
+
+#include <iostream>
+
+using namespace std;
+
+void usageQuit(const char* cmd) {
+  cout<<"Usage: "<<cmd
+      <<" [ N (> 0) [ E (> 0) [ Seed (> 0) [ C (>= 0) [ D (>= 0) ] ] ] ] ];"
+      <<endl;
+  exit(0);
+}
+
+int doConvert(const char* str, int minValue, const char* cmd) {
+  char* end;
+  int res = strtol(str, &end, 10);
+  if ((const char*)end == str || res < minValue) {
+    usageQuit(cmd);
+  }
+  return res;
+}
+
+
+void uMain::main() {
+  unsigned int numPhil = 5;
+  unsigned int numNoodles = 30;
+  unsigned int seed = getPid();
+
+  switch (argc) {
+    case 4:
+      seed = doConvert(argv[3], 1, argv[0]);
+    case 3:
+      numNoodles = doConvert(argv[2], 1, argv[0]);
+    case 2:
+      numPhil = doConvert(argv[1], 2, argv[0]);
+      break;
+    default:
+      usageQuite(argv[0]);
+  }
+
+  seedRandom(seed);
+
+  Printer printer(numPhil);
+  Table table(numPhile, printer);
+
+  Philosopher* phils[numPhil];
+  for (unsigned int id = 0; id < numPhils; ++i) {
+    phils[i] = new Philosopher(id, numNoodles, table, printer);
+  }
+
+  // wait for all the philosophers to finish
+  for (unsigned int id = 0; id < numPhils; ++i) {
+    delete phils[i];
+  }
+
+  cout<<"***********************"<<endl;
+  cout<<"Philosophers terminated"<<endl;
+}

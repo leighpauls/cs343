@@ -32,8 +32,8 @@ _Task Table {
   // common declarations
   bool philosopherCanPickUp(unsigned int philId);
   Printer &mPrinter;
-public:                             // common interface
-  Table( const unsigned int sumOfPhil, Printer &prt );
+public:
+  Table(const unsigned int numOfPhil, Printer &prt);
   void pickup( unsigned int id );
   void putdown( unsigned int id );
 };

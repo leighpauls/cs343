@@ -42,10 +42,7 @@ void Table::putdown(unsigned int id) {
   mForkStates[rightFork] = false;
 
   // cooperate with my neighbors
-  unsigned int leftPhilosopher = id - 1;
-  if (leftPhilosopher < 0) {
-    leftPhilosopher = mWaitingForFork.size() - 1;
-  }
+  unsigned int leftPhilosopher = id == 0 ? mWaitingForFork.size() - 1 : id - 1;
   if (philosopherCanPickUp(leftPhilosopher)) {
     mWaitingForFork[leftPhilosopher]->signal();
   }

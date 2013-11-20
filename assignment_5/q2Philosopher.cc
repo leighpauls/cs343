@@ -2,6 +2,9 @@
 #include "MPRNG.h"
 #include "q2Printer.h"
 
+#include <iostream>
+using namespace std;
+
 Philosopher::Philosopher(
     unsigned int id,
     unsigned int noodles,
@@ -19,7 +22,6 @@ void Philosopher::main() {
     mPrinter.print(mId, Hungry);
     doYield(sRandom(4));
     mTable.pickup(mId);
-
     unsigned int numEaten = min(sRandom(1, 5), mNoodlesRemaining);
     mNoodlesRemaining -= numEaten;
     mPrinter.print(mId, Eating, numEaten, mNoodlesRemaining);

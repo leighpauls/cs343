@@ -10,7 +10,7 @@ using namespace std;
 
 void usageQuit(const char* cmd) {
   cout<<"Usage: "<<cmd
-      <<" [ N (> 0) [ E (> 0) [ Seed (> 0) [ C (>= 0) [ D (>= 0) ] ] ] ] ];"
+      <<" [ philosophers (> 1) [ noodles (> 0) [ Seed (> 0) ] ] ]"
       <<endl;
   exit(0);
 }

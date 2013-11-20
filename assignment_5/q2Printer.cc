@@ -50,10 +50,12 @@ void Printer::printFinished() {
     flushBuffer();
   }
   for (unsigned int curId = 0; curId < mNumPhil; curId++) {
-    if (curId != mNextState) {
+    if (curId != mNextId) {
       mBuffer[curId] = string("...");
     } else {
-      mBuffer[curId] = Philosopher::Finished;
+      stringstream ss;
+      ss<<(char)Philosopher::Finished;
+      mBuffer[curId] = ss.str();
     }
   }
   flushBuffer();
@@ -66,7 +68,7 @@ void Printer::printState() {
   }
   if (mNextState == Philosopher::Waiting || mNextState == Philosopher::Eating) {
     stringstream ss;
-    ss<<mNextState<<mNextLeftNum<<","<<mNextRightNum;
+    ss<<(char)mNextState<<mNextLeftNum<<","<<mNextRightNum;
     mBuffer[mNextId] = ss.str();
     return;
   }

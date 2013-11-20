@@ -1,4 +1,4 @@
-#include "q2Table.h"
+#include "q2table.h"
 #include "q2Printer.h"
 
 #if defined( TABLETYPE_TASK )

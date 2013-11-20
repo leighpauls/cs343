@@ -1,4 +1,4 @@
-#include "q2Table.h"
+#include "q2table.h"
 
 /// helper function to check both forks
 bool Table::philosopherCanPickUp(unsigned int philId) {

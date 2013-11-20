@@ -1,6 +1,6 @@
 
 #include "q2Philosopher.h"
-#include "q2Table.h"
+#include "q2table.h"
 #include "q2Printer.h"
 
 #include <iostream>

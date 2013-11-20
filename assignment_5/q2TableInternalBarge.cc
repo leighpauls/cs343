@@ -1,4 +1,4 @@
-#include "q2Table.h"
+#include "q2table.h"
 
 #if defined (TABLETYPE_INTB)
 

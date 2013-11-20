@@ -1,6 +1,6 @@
 #pragma once
 
-#include "q2Table.h"
+#include "q2table.h"
 
 _Cormonitor Printer;
 

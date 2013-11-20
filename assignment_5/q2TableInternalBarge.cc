@@ -35,7 +35,7 @@ void Table::putdown(unsigned int id) {
   mForkStates[rightFork] = false;
 
   // cooperate with my neighbors
-  unsigned int leftPhil = id == 0 ? mWaitingForFork.size() - 1 : id - 1;
+  unsigned int leftPhil = id == 0 ? mWaitingPhils.size() - 1 : id - 1;
   unsigned int rightPhil = rightFork;
 
   // ping each waiting phil until my left and right eat, if they're able to
@@ -43,7 +43,6 @@ void Table::putdown(unsigned int id) {
          || (philosopherCanPickUp(rightPhil) && mWaitingPhils[rightPhil])) {
     mWaiting.signalBlock();
   }
-  fucking broken
 }
 
 #endif

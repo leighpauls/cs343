@@ -27,7 +27,7 @@ else						# implementation type has changed
 .PHONY : ${EXEC}
 ${EXEC} :
 	rm -f ImplType
-	rm -f q2Table*.d
+	${MAKE} clean
 	touch q2table.h
 	${MAKE} ${EXEC} TYPE="${TYPE}"
 endif

@@ -1,11 +1,12 @@
 #pragma once
 
+#include <vector>
+using namespace std;
+
 _Cormonitor Printer;
 
 /// internal scheduling monitor solution
 #if defined( TABLETYPE_INT )
-#include <vector>
-using namespace std;
 _Monitor Table {
   vector<bool> mForkStates;
   vector<uCondition*> mWaitingForFork;

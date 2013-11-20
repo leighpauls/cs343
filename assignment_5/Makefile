@@ -4,7 +4,7 @@ CXX = u++					# compiler
 CXXFLAGS = -g -Wall -Wno-unused-label -MMD -DTABLETYPE_${TYPE}
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
 
-OBJECTS = q2Main.o q2TableCommon.o q2TableInternal.o q2TableInternalBarge.o q2TableAuto.o q2Printer.o q2Philosopher.o
+OBJECTS = q2Main.o q2TableCommon.o q2TableInternal.o q2TableInternalBarge.o q2TableAuto.o q2TableTask.o q2Printer.o q2Philosopher.o
 DEPENDS = ${OBJECTS:.o=.d}			# substitute ".o" with ".d"
 EXEC = phil
 

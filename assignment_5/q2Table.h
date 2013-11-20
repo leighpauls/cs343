@@ -8,9 +8,7 @@ _Cormonitor Printer;
 /// internal scheduling monitor solution
 #if defined( TABLETYPE_INT )
 _Monitor Table {
-  vector<bool> mForkStates;
   vector<uCondition*> mWaitingForFork;
-
 
 /// internal scheduling monitor solution with barging
 #elif defined( TABLETYPE_INTB )
@@ -20,7 +18,6 @@ _Monitor Table {
   /// barging version of wait
   void wait();
 
-  vector<bool> mForkStates;
   vector<bool> mWaitingPhils;
 
 /// automatic-signal monitor solution
@@ -28,11 +25,14 @@ _Monitor Table {
 #include "AutomaticSignal.h"
 _Monitor Table {
   AUTOMATIC_SIGNAL;
-  vector<bool> mForkStates;
 
 /// internal/external scheduling task solution
 #elif defined( TABLETYPE_TASK )
 _Task Table {
+  void main();
+  void giveForks(unsigned int philId);
+  vector<uCondition*> mWaitingForFork;
+  int mActionId;
 
 #else
 #error unsupported table
@@ -40,6 +40,7 @@ _Task Table {
 
   // common declarations
   bool philosopherCanPickUp(unsigned int philId);
+  vector<bool> mForkStates;
   Printer &mPrinter;
 
 public:

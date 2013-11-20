@@ -3,6 +3,9 @@
 set -e
 
 cd ~/class/cs343/assignment_5/
+make phil TYPE=TASK
+./phil 5 6 1
+
 make phil TYPE=AUTO
 ./phil 5 6 1
 

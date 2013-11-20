@@ -21,6 +21,8 @@ void Table::pickup(unsigned int id) {
   unsigned int right = (id + 1) % mForkStates.size();
   while (mForkStates[left] || mForkStates[right]) {
     mWaitingPhils[id] = true;
+    // I can't pick up, but someone deeper in the stack might be able to
+    mWaiting.signal();
     wait();
     mWaitingPhils[id] = false;
   }
@@ -38,10 +40,10 @@ void Table::putdown(unsigned int id) {
   unsigned int leftPhil = id == 0 ? mWaitingPhils.size() - 1 : id - 1;
   unsigned int rightPhil = rightFork;
 
-  // ping each waiting phil until my left and right eat, if they're able to
-  while ((philosopherCanPickUp(leftPhil) && mWaitingPhils[leftPhil])
-         || (philosopherCanPickUp(rightPhil) && mWaitingPhils[rightPhil])) {
-    mWaiting.signalBlock();
+  // Start the cascade of philosophers trying to pick up forks
+  if ((philosopherCanPickUp(leftPhil) && mWaitingPhils[leftPhil])
+      || (philosopherCanPickUp(rightPhil) && mWaitingPhils[rightPhil])) {
+    mWaiting.signal();
   }
 }
 

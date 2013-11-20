@@ -1,16 +1,18 @@
 #include "q2Table.h"
 #include "q2Printer.h"
 
+#if defined( TABLETYPE_INT )
+
 Table::Table(const unsigned int numOfPhil, Printer &prt) :
     mForkStates(numOfPhil, false),
     mPrinter(prt) {
-  for (int i = 0; i < numOfPhil; ++i) {
+  for (unsigned int i = 0; i < numOfPhil; ++i) {
     mWaitingForFork.push_back(new uCondition());
   }
 }
 
 Table::~Table() {
-  for (int i = 0; i < mWaitingForFork.size(); ++i) {
+  for (unsigned int i = 0; i < mWaitingForFork.size(); ++i) {
     delete mWaitingForFork[i];
   }
 }
@@ -25,13 +27,6 @@ void Table::pickup(unsigned int id) {
   }
   mForkStates[left] = true;
   mForkStates[right] = true;
-}
-
-/// helper function to check both forks
-bool Table::philosopherCanPickUp(unsigned int philId) {
-  unsigned int left = philId;
-  unsigned int right = (philId + 1) % mForkStates.size();
-  return !(mForkStates[left] || mForkStates[right]);
 }
 
 void Table::putdown(unsigned int id) {
@@ -52,3 +47,5 @@ void Table::putdown(unsigned int id) {
     mWaitingForFork[rightPhilosopher]->signal();
   }
 }
+
+#endif

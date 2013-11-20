@@ -25,7 +25,10 @@ _Monitor Table {
 
 /// automatic-signal monitor solution
 #elif defined( TABLETYPE_AUTO )
+#include "AutomaticSignal.h"
 _Monitor Table {
+  AUTOMATIC_SIGNAL;
+  vector<bool> mForkStates;
 
 /// internal/external scheduling task solution
 #elif defined( TABLETYPE_TASK )

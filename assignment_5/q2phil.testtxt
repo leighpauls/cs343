@@ -1,0 +1,294 @@
+Script started on Wed 20 Nov 2013 04:58:04 PM EST
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ make phil
+echo "IMPLTYPE=INT" > ImplType
+sleep 2
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2Main.o q2Main.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2TableCommon.o q2TableCommon.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2TableInternal.o q2TableInternal.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2TableInternalBarge.o q2TableInternalBarge.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2TableAuto.o q2TableAuto.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2TableTask.o q2TableTask.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2Printer.o q2Printer.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2Philosopher.o q2Philosopher.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT q2Main.o q2TableCommon.o q2TableInternal.o q2TableInternalBarge.o q2TableAuto.o q2TableTask.o q2Printer.o q2Philosopher.o -o phil
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ ./phil
+Phil0	Phil1	Phil2	Phil3	Phil4	
+H	H	H			
+E2,28		E3,27	H	H	
+	W1,2	T	W3,4		
+T	E2,28		E2,28		
+	T		T	E5,25	
+			H	T	
+H			E5,23		
+E3,25			T		
+T					
+H	H				
+W0,1	E2,26	H	H		
+			E1,22		
+E5,20	T	E2,25	T		
+		T			
+		H			
+		E4,21		H	
+T		T		W4,0	
+				E4,21	
+	H			T	
+	E5,21		H		
+H	T		E2,20		
+E1,19			T		
+T		H			
+		E3,18	H		
+		T	W3,4		
+			E3,17	H	
+			T	E4,17	
+	H			T	
+H	E4,17				
+E4,15	T	H	H		
+		E2,16			
+T		T	E1,16		
+		H			
+		W2,3	T		
+		E1,15	H	H	
+		T	W3,4	E5,12	
+H	H		E3,13	T	
+E2,13			T		
+T	E2,15				
+H	T				
+E5,8					
+T					
+H					
+E5,3					
+T		H	H		
+		E3,12			
+H		T		H	
+W0,1	H		W3,4	E3,9	
+	E3,12		E5,8	T	
+E3,0	T		T		
+F	...	...	...	...	
+				H	
+				E2,7	
+	H	H		T	
+	E2,10	W2,3	H		
+	T				
+	H	E2,10			
+	W1,2	T	W3,4		
+	E4,6		E1,7	H	
+	T	H	T	E1,6	
+		E3,7		T	
+				H	
+			H	E2,4	
+		T	W3,4	T	
+			E3,4		
+	H		T		
+	E4,2		H		
+	T		E4,0		
+...	...	...	F	...	
+		H		H	
+	H	E3,4		E2,2	
+	E2,0	T		T	
+...	F	...	...	...	
+		H			
+		E4,0			
+...	...	F	...	...	
+				H	
+				E2,0	
+...	...	...	...	F	
+***********************
+Philosophers terminated
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ ./phil 0
+Usage: ./phil [ philosophers (> 1) [ noodles (> 0) [ Seed (> 0) ] ] ]
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ ./phil 0[K1
+Usage: ./phil [ philosophers (> 1) [ noodles (> 0) [ Seed (> 0) ] ] ]
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ ./phil 1[K2
+Phil0	Phil1	
+H	H	
+	E3,27	
+E3,27	T	
+T	H	
+	E1,26	
+H	T	
+E4,23		
+T	H	
+	E3,23	
+	T	
+	H	
+	E1,22	
+	T	
+	H	
+H	E4,18	
+E5,18	T	
+T		
+H	H	
+	E3,15	
+E1,17	T	
+	H	
+T	W1,0	
+	E4,11	
+	T	
+	H	
+	E5,6	
+H	T	
+E1,16		
+T	H	
+H	E4,2	
+W0,1	T	
+E1,15	H	
+T	E1,1	
+	T	
+	H	
+	E1,0	
+...	F	
+H		
+E5,10		
+T		
+H		
+E4,6		
+T		
+H		
+E5,1		
+T		
+H		
+E1,0		
+F	...	
+***********************
+Philosophers terminated
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ ./phil 2 0
+Usage: ./phil [ philosophers (> 1) [ noodles (> 0) [ Seed (> 0) ] ] ]
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ echo test.py[1P test.py[1P test.py[1P test.py[1P test.pyc test.pya test.pyt test.py[C[C[C[C[C[C[C[C
+#!/usr/bin/env python
+# test.py
+# Tests to verify that no valid input can cause any of the program types to
+# deadlock. If this program finishs without exception, then it is reasonable to
+# assume that the program is correct.
+#
+# This tests a bunch of permutations possible input values for the program. Most
+# importantly, it tests the border cases (those values adjacent to the invalid
+# input arguments), and a few larger inputs to better verify the correctness
+# of the solution.
+#
+
+import subprocess
+
+
+MIN_ARG_VALUES = [2, 1, 1]
+MAX_ARG_VALUES = [10, 10, 10]
+
+# If the process exits successfully, then it did not deadlock
+# Therefore the test case passes if this function returns
+def run_cmd(argValues):
+    stringValues = [str(x) for x in argValues]
+    cmd = ['./phil'] + stringValues
+    if subprocess.check_call(cmd, stdout=subprocess.PIPE):
+        raise Exception(str(argValues) + " Failed!!!")
+
+def try_all_for_num_args(numArgs):
+    """try all the argument combos within the range specified"""
+    startArgs = MIN_ARG_VALUES[0:numArgs]
+    curArgs = startArgs[:]
+    endArgs = MAX_ARG_VALUES[0:numArgs]
+
+    def incrementArgs(pos):
+        """return True if it can increment curArgs and not pass endArgs"""
+        if pos < -len(curArgs):
+            return False
+        curArgs[pos] += 1
+        if curArgs[pos] <= endArgs[pos]:
+            return True
+        curArgs[pos] = startArgs[pos]
+        return incrementArgs(pos-1)
+
+    while True:
+        run_cmd(curArgs)
+        if not incrementArgs(-1):
+            break
+
+def try_all_inputs():
+    for numArgs in xrange(len(MIN_ARG_VALUES)):
+        try_all_for_num_args(numArgs)
+    print "Success!"
+
+BUILD_TYPES = ['INTB', 'TASK', 'AUTO', 'INT']
+
+def try_all_build_types():
+    for build_type in BUILD_TYPES:
+        print build_type, "..."
+        subprocess.check_call(
+            ['make', 'phil', 'TYPE='+build_type],
+            stdout=subprocess.PIPE)
+        try_all_inputs()
+    print "All build types completed!"
+
+if __name__ == "__main__":
+    try_all_build_types()
+
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ python test.py 
+INTB ...
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+q2table.h: In constructor ‘Table::Table(unsigned int, Printer&, UPP::uAction)’:
+q2table.h:43:18: warning: ‘Table::mForkStates’ will be initialized after [-Wreorder]
+q2table.h:21:18: warning:   ‘std::vector<bool> Table::mWaitingPhils’ [-Wreorder]
+q2TableInternalBarge.cc:15:2: warning:   when initialized here [-Wreorder]
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+Success!
+TASK ...
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+Success!
+AUTO ...
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+Success!
+INT ...
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+Success!
+All build types completed!
+
+leigh@leigh-VirtualBox:~/class/cs343/assignment_5$ exit
+exit
+
+Script done on Wed 20 Nov 2013 04:59:50 PM EST

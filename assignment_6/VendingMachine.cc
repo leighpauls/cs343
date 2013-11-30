@@ -19,10 +19,6 @@ VendingMachine::~VendingMachine() {
 }
 
 Status VendingMachine::buy(Flavours flavour, WATCard &card) {
-  // make sure that it's not being re-stocked
-  if (mBeingRestocked) {
-    _Accept(restocked);
-  }
   // I'm allowed to try buying now
   if (mStockLevels[flavour] == 0) {
     return STOCK;
@@ -65,10 +61,15 @@ void main() {
 
   mNameServer.VMRegister(this);
   for (;;) {
-    _Accept(
+    _Accept(inventory) {
+      // wait for restocking to finish
+      _Accept(restocked);
+    } or _Accept(buy) {
+      // do nothing
+    } or _Accept(~VendingMachine) {
+      break;
+    }
   }
-
-  _Accept(~VendingMachine);
 
   mPrinter.print(Printer::VendingMachine, mId, Printer::Finished);
 }

@@ -19,40 +19,37 @@ void NameServer::VMRegister(VendingMachine *vendingMachine) {
       Printer::NameServer,
       RegisterMachine,
       vendingMachine->getId());
-  mMachines[vendingMachine->getId()] = vendingMachine;
+  mMachines[mNumMachinesRegistered] = vendingMachine;
   mNumMachinesRegistered++;
 }
 
-void NameServer::waitForAllMachines() {
-  // don't respond until registration is done
-  if (mNumMachinesRegistered != mNumVendingMachines) {
-    _When(mNumMachinesRegistered == mNumVendingMachines) _Accept(VMRegister);
-  }
-}
-
 VendingMachine* NameServer::getMachine(unsigned int studentId) {
-  waitForAllMachines();
   unsigned int machineId = mStudentMachineMapping[studentId];
   mPrinter.print(Printer::NameServer, NewMachine, studentId, machineId);
 
-  // Tell the task which student to update
-  mCalledStudent = studentId;
+  // prepare the mapping for next time
+  mStudentMachineMapping[studentId] =
+      (mStudentMachineMapping[studentId] + 1) % mNumVendingMachines;
 
   return mMachines[machineId];
 }
+
 VendingMachine **getMachineList() {
-  waitForAllMachines();
   return mMachines;
 }
 
 void main() {
   mPrinter.print(Printer::NameServer, Printer::Starting);
 
+  // wait for all of the machines to register
+  while (mNumMachinesRegistered < mNumVendingMachines) {
+    _Accept(VMRegister);
+  }
+
   for (;;) {
-    _Accept(getMachine) {
+    _Accept(getMachine, getMachineList) {
       // get the selection ready for the next call
-      mStudentMachineMapping[mCalledStudent] =
-          (mStudentMachineMapping[mCalledStudent] + 1) % mNumVendingMachines;
+    } or _Accept(getMachineList) {
     } or _Accept(~NameServer) {
       break;
     }

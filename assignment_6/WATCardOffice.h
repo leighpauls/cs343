@@ -1,20 +1,60 @@
 #pragma once
 
 #include "WATCard.h"
+#include "Printer.h"
+#include "Bank.h"
+
+#include <deque>
+
+using namespace std;
 
 _Task WATCardOffice {
-    struct Job {                           // marshalled arguments and return future
-        Args args;                         // call arguments (YOU DEFINE "Args")
-        FWATCard result;                   // return future
-        Job( Args args ) : args( args ) {}
-    };
-    _Task Courier { ... };                 // communicates with bank
+public:
+  // Thrown if a transfer is lost
+  _Event Lost {};
 
+  WATCardOffice(Printer &prt, Bank &bank, unsigned int numCouriers);
+  FWATCard create(unsigned int sid, unsigned int amount);
+  FWATCard transfer(unsigned int sid, unsigned int amount, WATCard *card);
+  Job *requestWork();
+
+private:
+  enum States {
+    CourierRendezvousDone = 'W',
+    CreationRendezvousDone = 'C',
+    TransferRendezvousDone = 'T',
+  };
+  struct Job {
+    unsigned int mStudentId;
+    unsigned int mAmount;
+    WATCard* mCard;
+
+    FWATCard mResult;
+    Job(unsigned int sId, unsigned int amount, WATCard* card)
+        : mStudentId(sId), mAmount(amount), mCard(card) {}
+  };
+
+  _Task Courier {
+ public:
+    Courier(unsigned int id, WATCardOffice* office, Bank& bank);
+
+ private:
     void main();
-  public:
-    _Event Lost {};                        // uC++ exception type, like "struct"
-    WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers );
-    FWATCard create( unsigned int sid, unsigned int amount );
-    FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );
-    Job *requestWork();
+    unsigned int mId;
+    WATCardOffice* mOffice;
+    Bank& mBank;
+    enum Status {
+      StartTransfer = 't',
+      DoneTransfer = 'T',
+    };
+  };
+
+  void main();
+
+  Printer& mPrinter;
+  Bank& mBank;
+  unsigned int mNumCouriers;
+  bool mKilled;
+  uCondition mWaitingForWork;
+  deque<Job*> mPendingJobs;
 };

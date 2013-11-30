@@ -8,7 +8,13 @@
 _Task VendingMachine {
 public:
   // flavours of soda (YOU DEFINE)
-  enum Flavours { ... };
+  enum Flavours {
+    BlackCherry,
+    CreamSoda,
+    RootBeer,
+    Lime,
+    NUM_FLAVOURS,
+  };
   // purchase status: successful buy, out of stock, insufficient funds
   enum Status { BUY, STOCK, FUNDS };
 
@@ -26,4 +32,16 @@ public:
   _Nomutex unsigned int getId();
 private:
   void main();
+
+  enum Status {
+    StartReloading = 'r',
+    DoneReloading = 'R',
+    BoughtSoda = 'B',
+  };
+
+  Printer& mPrinter;
+  NameServer& mNameServer;
+  unsigned int mId;
+  unsigned int mSodaCost;
+  unsigned int mMaxStockPerFlavour;
 };

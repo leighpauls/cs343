@@ -10,8 +10,12 @@ public:
     BottlingPlant,
     Student,
     Vending,
-    Courier
+    Courier,
   };
+  enum CommonStates {
+    Starting = 'S',
+    Finished = 'F',
+  }
   Printer(
       unsigned int numStudents,
       unsigned int numVendingMachines,

@@ -1,12 +1,19 @@
 #pragma once
 
 class WATCard {
-    WATCard( const WATCard & );            // prevent copying
-    WATCard &operator=( const WATCard & );
-  public:
-    WATCard();
-    typedef Future_ISM<WATCard *> FWATCard; // future watcard pointer
-    void deposit( unsigned int amount );
-    void withdraw( unsigned int amount );
-    unsigned int getBalance();
+ public:
+  WATCard();
+  // future watcard pointer
+  typedef Future_ISM<WATCard *> FWATCard;
+
+  void deposit( unsigned int amount );
+  void withdraw( unsigned int amount );
+  unsigned int getBalance();
+
+ private:
+  unsigned int mBalance;
+
+  // prevent copying
+  WATCard( const WATCard & );
+  WATCard &operator=( const WATCard & );
 };

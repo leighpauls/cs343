@@ -11,8 +11,7 @@ WATCardOffice::WATCardOffice(
 
 FWATCard WATCardOffice::create(unsigned int sid, unsigned int amount) {
   WATCard* newCard = new WATCard();
-  Job* newJob = new Job(sid, amount, newCard);
-  mPendingJobs.push_back(newJob);
+  mPendingJob = new Job(sid, amount, newCard);
   mPrinter.print(Printer::WATCardOffice, CreationRendezvousDone, sid, amount);
   return newJob->mResult;
 }
@@ -21,25 +20,13 @@ FWATCard WATCardOffice::transfer(
     unsigned int sid,
     unsigned int amount,
     WATCard* card) {
-  Job* newJob = new Job(sid, amount, card);
-  mPendingJobs.push_back(newJob);
+  mPendingJob = new Job(sid, amount, card);
   mPrinter.print(Printer::WATCardOffice, TransferRendezvousDone, sid, amount);
   return newJob->mResult;
 }
 
 Job* WATCardOffice::requestWork() {
-  if (mKilled) {
-    return NULL;
-  }
-  if (mPendingJobs.empty()) {
-    // wait for the admin to give me work
-    mWaitingForWork.wait();
-    if (mKilled) {
-      return NULL;
-    }
-  }
-  mPrinter.print(Printer::WATCardOffice, CourierRendezvousDone);
-  return mPendingJobs.pop_front();
+  return mPendingJob;
 }
 
 Courier::Courier(unsigned int id, WATCardOffice* office, Bank& bank)
@@ -96,19 +83,17 @@ void WATCardOffice::main() {
   }
 
   for (;;) {
-    _Accept(transfer) {
-      mWaitingForWork.signal();
+    // Wait for a creation or transfer, or to be killed
+    _Accept(create, transfer) {
+      // give the work to a courier
+      _Accept(requestWork);
     } or _Accept(~WATCardOffice) {
       break;
     }
   }
 
-  // Tell the couriers to quit
-  mKilled = true;
-  while (!mWaitingForWork.empty()) {
-    mWaitingForWork.signal();
-  }
   // Wait for the couriers to quit
+  mPendingWork = NULL;
   for (int i = 0; i < couriers.size(); ++i) {
     delete couriers[i];
   }

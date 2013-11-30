@@ -54,7 +54,5 @@ private:
   Printer& mPrinter;
   Bank& mBank;
   unsigned int mNumCouriers;
-  bool mKilled;
-  uCondition mWaitingForWork;
-  deque<Job*> mPendingJobs;
+  Job* mPendingJob;
 };

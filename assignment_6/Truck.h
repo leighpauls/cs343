@@ -14,4 +14,11 @@ public:
       unsigned int maxStockPerFlavour);
 private:
   void main();
+
+  enum Status {
+    ShipmentPickedUp = 'P',
+    BeginDelivery = 'd',
+    UnsuccessfulDelivery = 'U',
+    SuccessfulDelivery = 'D',
+  };
 };

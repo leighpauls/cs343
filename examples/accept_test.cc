@@ -29,21 +29,32 @@ public:
 };
 
 _Task AcceptingTask {
+  uCondition cond;
 public:
-  AcceptingTask(Accepter& a) : mA(a) {}
+  void doAccept() {
+    cout<<"about to wait"<<endl;
+    cond.wait();
+    cout<<"done waiting"<<endl;
+  }
 private:
-  Accepter& mA;
   void main() {
-    cout<<"Start waiting..."<<endl;
-    mA.waitAll();
+    cout<<"task start"<<endl;
+    while (1) {
+      cout<<"Wait"<<endl;
+      _Accept(doAccept);
+      cond.signalBlock();
+      cout<<"Accepted!"<<endl;
+    }
   }
 };
 
 void uMain::main() {
   cout<<"Starting"<<endl;
   //uProcessor p1, p2;
-  Accepter a;
-  AcceptingTask t1(a), t2(a);
-  a.waitAll();
+  AcceptingTask t;
+  cout<<"A"<<endl;
+  t.doAccept();
+  cout<<"B"<<endl;
+  t.doAccept();
   cout<<"Done!"<<endl;
 }

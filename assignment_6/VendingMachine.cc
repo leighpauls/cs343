@@ -64,6 +64,10 @@ void main() {
   mPrinter.print(Printer::VendingMachine, mId, Printer::Starting, mSodaCost);
 
   mNameServer.VMRegister(this);
+  for (;;) {
+    _Accept(
+  }
+
   _Accept(~VendingMachine);
 
   mPrinter.print(Printer::VendingMachine, mId, Printer::Finished);

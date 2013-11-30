@@ -12,6 +12,7 @@ public:
   void VMRegister(VendingMachine *vendingmachine);
   VendingMachine *getMachine(unsigned int studentId);
   VendingMachine **getMachineList();
+
 private:
   void main();
 

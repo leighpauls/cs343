@@ -13,7 +13,8 @@ BottlingPlant::BottlingPlant(
       mNumVendingMachines(numVendingMachines),
       mMaxStockPerFlavour(maxStockPerFlavour),
       mTimeBetweenShipments(timeBetweenShipments),
-      mStock(VendingMachine::NUM_FLAVOURS, 0) {}
+      mStock(VendingMachine::NUM_FLAVOURS, 0),
+      mTerminating(false) {}
 
 bool BottlingPlant::getShipment(unsigned int cargo[]) {
   if (mTerminating) {

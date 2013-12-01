@@ -2,6 +2,9 @@
 #include "VendingMachine.h"
 #include "MPRNG.h"
 
+#include <iostream>
+using namespace std;
+
 Student::Student(
     Printer &prt,
     NameServer &nameServer,
@@ -25,7 +28,6 @@ void Student::main() {
       favoriteFlavour,
       bottlesToBuy);
 
-  mCardOffice.create(mId, 5);
   VendingMachine* machine = NULL;
   WATCard::FWATCard cardFuture = mCardOffice.create(mId, 5);
   while (bottlesToBuy > 0) {

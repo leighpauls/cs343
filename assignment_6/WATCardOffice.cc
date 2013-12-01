@@ -1,6 +1,9 @@
 #include "WATCardOffice.h"
 #include "MPRNG.h"
 
+#include <iostream>
+using namespace std;
+
 WATCardOffice::WATCardOffice(
     Printer &prt,
     Bank &bank,
@@ -34,7 +37,9 @@ WATCard::FWATCard WATCardOffice::transfer(
 }
 
 WATCardOffice::Job* WATCardOffice::requestWork() {
-  return mPendingJob;
+  Job* res = mPendingJob;
+  mPendingJob = NULL;
+  return res;
 }
 
 WATCardOffice::Courier::Courier(
@@ -60,15 +65,16 @@ void WATCardOffice::Courier::main() {
         job->mStudentId,
         job->mAmount);
 
+    // apply the transfer
     mBank.withdraw(job->mStudentId, job->mAmount);
+    job->mCard->deposit(job->mAmount);
 
     if (mprng(1, 6) == 1) {
       // I lose the card
       job->mResult.exception(new WATCardOffice::Lost());
       delete job->mCard;
-      delete job;
     } else {
-      // deliver the funds
+      // deliver the card
       job->mResult.delivery(job->mCard);
       mOffice->mPrinter.print(
           Printer::Courier,
@@ -76,8 +82,8 @@ void WATCardOffice::Courier::main() {
           DoneTransfer,
           job->mStudentId,
           job->mAmount);
-      delete job;
     }
+    delete job;
   }
 
   mOffice->mPrinter.print(Printer::Courier, mId, (char)Printer::Finished);
@@ -102,9 +108,14 @@ void WATCardOffice::main() {
     }
   }
 
-  // Wait for the couriers to quit
+  // tell all the couriers to quit
   mPendingJob = NULL;
-  for (int i = 0; i < couriers.size(); ++i) {
+  for (unsigned int i = 0; i < couriers.size(); ++i) {
+    _Accept(requestWork);
+  }
+
+  // Wait for the couriers to quit
+  for (unsigned int i = 0; i < couriers.size(); ++i) {
     delete couriers[i];
   }
 

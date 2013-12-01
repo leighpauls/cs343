@@ -28,7 +28,6 @@ int doConvert(const char* str, int minValue, const char* cmd) {
 }
 
 void uMain::main() {
-  cout<<"Start"<<endl;
   unsigned int seed = getpid();
   const char* configFile = "soda.config";
   switch (argc) {

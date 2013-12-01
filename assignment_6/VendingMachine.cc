@@ -18,12 +18,12 @@ VendingMachine::~VendingMachine() {
   delete [] mStockLevels;
 }
 
-Status VendingMachine::buy(Flavours flavour, WATCard &card) {
+VendingMachine::Status VendingMachine::buy(Flavours flavour, WATCard &card) {
   // I'm allowed to try buying now
   if (mStockLevels[flavour] == 0) {
     return STOCK;
   }
-  if (card.balance() < mSodaCost) {
+  if (card.getBalance() < mSodaCost) {
     return FUNDS;
   }
   // successful sale
@@ -39,13 +39,11 @@ Status VendingMachine::buy(Flavours flavour, WATCard &card) {
 }
 
 unsigned int* VendingMachine::inventory() {
-  mPrinter.print(Printer::VendingMachine, mId, StartReloading);
-  mBeingRestocked = true;
+  mPrinter.print(Printer::VendingMachine, mId, (char)StartReloading);
   return mStockLevels;
 }
 void VendingMachine::restocked() {
-  mPrinter.print(Printer::VendingMachine, mId, DoneReloading);
-  mBeingRestocked = false;
+  mPrinter.print(Printer::VendingMachine, mId, (char)DoneReloading);
 }
 
 _Nomutex unsigned int VendingMachine::cost() {
@@ -56,8 +54,12 @@ _Nomutex unsigned int VendingMachine::getId() {
   return mId;
 }
 
-void main() {
-  mPrinter.print(Printer::VendingMachine, mId, Printer::Starting, mSodaCost);
+void VendingMachine::main() {
+  mPrinter.print(
+      Printer::VendingMachine,
+      mId,
+      (char)Printer::Starting,
+      mSodaCost);
 
   mNameServer.VMRegister(this);
   for (;;) {
@@ -71,5 +73,5 @@ void main() {
     }
   }
 
-  mPrinter.print(Printer::VendingMachine, mId, Printer::Finished);
+  mPrinter.print(Printer::VendingMachine, mId, (char)Printer::Finished);
 }

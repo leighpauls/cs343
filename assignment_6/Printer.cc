@@ -1,6 +1,7 @@
 #include "Printer.h"
 
-#include <iosteam>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -11,7 +12,8 @@ Printer::Printer(
     : mBuffer(5 + numStudents + numVendingMachines + numCouriers, string("")),
       mNumStudents(numStudents),
       mNumMachines(numVendingMachines),
-      mNumCouriers(numCouriers) {
+      mNumCouriers(numCouriers),
+      mNumPending(0) {
   // print the banner
   resume();
 }
@@ -24,24 +26,24 @@ void Printer::main() {
   mBuffer[kindToIdx(NameServer)] = string("Names");
   mBuffer[kindToIdx(Truck)] = string("Truck");
   mBuffer[kindToIdx(BottlingPlant)] = string("Plant");
-  for (int i = 0; i < mNumStudents; ++i) {
+  for (unsigned int i = 0; i < mNumStudents; ++i) {
     ss<<"Stud"<<i;
     mBuffer[kindToIdx(Student, i)] = ss.str();
     ss.str("");
   }
-  for (int i = 0; i < mNumMachines; ++i) {
+  for (unsigned int i = 0; i < mNumMachines; ++i) {
     ss<<"Mach"<<i;
-    mBuffer[kindToIdx(Vending, i)] = ss.str();
+    mBuffer[kindToIdx(VendingMachine, i)] = ss.str();
     ss.str("");
   }
-  for (int i = 0; i < mNumCouriers; ++i) {
+  for (unsigned int i = 0; i < mNumCouriers; ++i) {
     ss<<"Cour"<<i;
     mBuffer[kindToIdx(Courier, i)] = ss.str();
     ss.str("");
   }
   flushBuffer();
   // print the asterisks
-  for (int i = 0; i < mBuffer.size(); ++i) {
+  for (unsigned int i = 0; i < mBuffer.size(); ++i) {
     mBuffer[i] = string("*******");
   }
   flushBuffer();
@@ -61,7 +63,7 @@ void Printer::printNextStateFinished() {
   if (mNumPending > 0) {
     flushBuffer();
   }
-  for (int i = 0; i < mBuffer.size(); ++i) {
+  for (unsigned int i = 0; i < mBuffer.size(); ++i) {
     if (i == mNextIdx) {
       stringstream ss;
       ss<<(char)Finished;
@@ -92,7 +94,7 @@ void Printer::printNextState() {
 
 void Printer::flushBuffer() {
   stringstream ss;
-  for (int i = 0; i < mBuffer.size()-1; ++i) {
+  for (unsigned int i = 0; i < mBuffer.size()-1; ++i) {
     ss<<mBuffer[i]<<'\t';
     mBuffer[i] = string("");
   }
@@ -123,7 +125,7 @@ void Printer::print(
     char state,
     int value1,
     int value2) {
-  mNextIdx = kindToIdx(kind, lib);
+  mNextIdx = kindToIdx(kind, lid);
   mNextState = state;
   mNextParamA = value1;
   mNextParamB = value2;
@@ -136,21 +138,25 @@ unsigned int Printer::kindToIdx(Kind kind) {
     case WATCardOffice: return 1;
     case NameServer: return 2;
     case Truck: return 3;
-    case NameServer: return 4;
+    case BottlingPlant: return 4;
+    default:
+      break;
   }
   return (unsigned int)-1; // Fail
 }
 
-unsigned int Printer::kindToIdx(King kind, unsigned int id) {
+unsigned int Printer::kindToIdx(Kind kind, unsigned int id) {
   unsigned int res = id;
   switch (kind) {
     case Courier:
       res += mNumMachines;
-    case Machine:
-      res += mNumStudents:
+    case VendingMachine:
+      res += mNumStudents;
     case Student:
       res += 5;
       return res;
+    default:
+      break;
   }
   return (unsigned int)-1; // fail
 }

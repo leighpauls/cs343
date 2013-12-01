@@ -1,11 +1,13 @@
 #include "NameServer.h"
+#include "VendingMachine.h"
 
 NameServer::NameServer(
     Printer &prt,
     unsigned int numVendingMachines,
     unsigned int numStudents)
-    : mNumStudents(numStudents),
-      mNumVendingMachines(numVendingMachine),
+    : mPrinter(prt),
+      mNumStudents(numStudents),
+      mNumVendingMachines(numVendingMachines),
       mNumMachinesRegistered(0) {
   mMachines = new VendingMachine*[mNumVendingMachines];
   mStudentMachineMapping = new unsigned int[mNumStudents];
@@ -17,7 +19,7 @@ NameServer::NameServer(
 void NameServer::VMRegister(VendingMachine *vendingMachine) {
   mPrinter.print(
       Printer::NameServer,
-      RegisterMachine,
+      (char)RegisterMachine,
       vendingMachine->getId());
   mMachines[mNumMachinesRegistered] = vendingMachine;
   mNumMachinesRegistered++;
@@ -25,7 +27,7 @@ void NameServer::VMRegister(VendingMachine *vendingMachine) {
 
 VendingMachine* NameServer::getMachine(unsigned int studentId) {
   unsigned int machineId = mStudentMachineMapping[studentId];
-  mPrinter.print(Printer::NameServer, NewMachine, studentId, machineId);
+  mPrinter.print(Printer::NameServer, (char)NewMachine, studentId, machineId);
 
   // prepare the mapping for next time
   mStudentMachineMapping[studentId] =
@@ -34,11 +36,11 @@ VendingMachine* NameServer::getMachine(unsigned int studentId) {
   return mMachines[machineId];
 }
 
-VendingMachine **getMachineList() {
+VendingMachine** NameServer::getMachineList() {
   return mMachines;
 }
 
-void main() {
+void NameServer::main() {
   mPrinter.print(Printer::NameServer, Printer::Starting);
 
   // wait for all of the machines to register
@@ -48,12 +50,10 @@ void main() {
 
   for (;;) {
     _Accept(getMachine, getMachineList) {
-      // get the selection ready for the next call
-    } or _Accept(getMachineList) {
     } or _Accept(~NameServer) {
       break;
     }
   }
 
-  mPrinter.printer(Printer::NameServer, Printer::Finished);
+  mPrinter.print(Printer::NameServer, Printer::Finished);
 }

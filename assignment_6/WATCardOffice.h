@@ -14,8 +14,22 @@ public:
   _Event Lost {};
 
   WATCardOffice(Printer &prt, Bank &bank, unsigned int numCouriers);
-  FWATCard create(unsigned int sid, unsigned int amount);
-  FWATCard transfer(unsigned int sid, unsigned int amount, WATCard *card);
+  WATCard::FWATCard create(unsigned int sid, unsigned int amount);
+  WATCard::FWATCard transfer(
+      unsigned int sid,
+      unsigned int amount,
+      WATCard *card);
+
+  struct Job {
+    unsigned int mStudentId;
+    unsigned int mAmount;
+    WATCard* mCard;
+
+    WATCard::FWATCard mResult;
+    Job(unsigned int sId, unsigned int amount, WATCard* card)
+        : mStudentId(sId), mAmount(amount), mCard(card) {}
+  };
+
   Job *requestWork();
 
 private:
@@ -24,21 +38,12 @@ private:
     CreationRendezvousDone = 'C',
     TransferRendezvousDone = 'T',
   };
-  struct Job {
-    unsigned int mStudentId;
-    unsigned int mAmount;
-    WATCard* mCard;
-
-    FWATCard mResult;
-    Job(unsigned int sId, unsigned int amount, WATCard* card)
-        : mStudentId(sId), mAmount(amount), mCard(card) {}
-  };
 
   _Task Courier {
- public:
+   public:
     Courier(unsigned int id, WATCardOffice* office, Bank& bank);
 
- private:
+   private:
     void main();
     unsigned int mId;
     WATCardOffice* mOffice;

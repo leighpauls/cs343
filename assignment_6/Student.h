@@ -22,7 +22,7 @@ private:
 
   Printer& mPrinter;
   NameServer& mNameServer;
-  WATCardOffice mCardOffice;
+  WATCardOffice& mCardOffice;
   unsigned int mId;
   unsigned int mMaxPurchases;
 };

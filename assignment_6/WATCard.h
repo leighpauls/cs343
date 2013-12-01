@@ -1,5 +1,7 @@
 #pragma once
 
+#include <uFuture.h>
+
 class WATCard {
  public:
   WATCard();

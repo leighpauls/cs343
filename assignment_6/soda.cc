@@ -40,8 +40,8 @@ void uMain::main() {
     default:
       usageQuit(argv[0]);
   }
-  ConfigParams conf;
-  processConfigFile(configFile, params);
+  ConfigParms conf;
+  processConfigFile(configFile, conf);
 
   mprng.seed(seed);
 
@@ -58,6 +58,7 @@ void uMain::main() {
     {
       BottlingPlant bottlingPlant(
           printer,
+          nameServer,
           conf.numVendingMachines,
           conf.maxShippedPerFlavour,
           conf.maxStockPerFlavour,
@@ -76,7 +77,7 @@ void uMain::main() {
       for (int i = 0; i < conf.numVendingMachines; ++i) {
         machines.push_back(new VendingMachine(
             printer,
-            nameserver,
+            nameServer,
             i,
             conf.sodaCost,
             conf.maxStockPerFlavour));

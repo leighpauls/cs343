@@ -21,4 +21,10 @@ private:
     UnsuccessfulDelivery = 'U',
     SuccessfulDelivery = 'D',
   };
+
+  Printer& mPrinter;
+  NameServer& mNameServer;
+  BottlingPlant& mPlant;
+  unsigned int mNumVendingMachines;
+  unsigned int mMaxStockPerFlavour;
 };

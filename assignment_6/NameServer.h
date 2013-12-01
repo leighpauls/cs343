@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Printer.h"
-#include "VendingMachine.h"
+
+_Task VendingMachine;
 
 _Task NameServer {
 public:
@@ -16,6 +17,7 @@ public:
 private:
   void main();
 
+  Printer& mPrinter;
   unsigned int mNumStudents;
   unsigned int mNumVendingMachines;
   unsigned int mNumMachinesRegistered;

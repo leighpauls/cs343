@@ -19,12 +19,12 @@ void Parent::main() {
     _Accept(~Parent) {
       break;
     } _Else {
-      unsigned int student = mprng(0, numStudents-1);
+      unsigned int student = mprng(0, mNumStudents-1);
       unsigned int amount = mprng(1, 3);
-      mPrinter.print(Printer::Parent, Depositing, student, amount);
+      mPrinter.print(Printer::Parent, (char)Depositing, student, amount);
       mBank.deposit(student, amount);
     }
   }
 
-  mPrinter.print(Printer::Parent, Printer::Finished):
+  mPrinter.print(Printer::Parent, Printer::Finished);
 }

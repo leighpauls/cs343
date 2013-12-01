@@ -1,5 +1,9 @@
 #pragma once
 
+#include <vector>
+
+using namespace std;
+
 _Monitor Bank {
 public:
   Bank(unsigned int numStudents);

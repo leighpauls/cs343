@@ -1,5 +1,7 @@
 #include "BottlingPlant.h"
 #include "MPRNG.h"
+#include "VendingMachine.h"
+#include "Truck.h"
 
 BottlingPlant::BottlingPlant(
     Printer &prt,
@@ -11,6 +13,7 @@ BottlingPlant::BottlingPlant(
     : mPrinter(prt),
       mNameServer(nameServer),
       mNumVendingMachines(numVendingMachines),
+      mMaxShippedPerFlavour(maxShippedPerFlavour),
       mMaxStockPerFlavour(maxStockPerFlavour),
       mTimeBetweenShipments(timeBetweenShipments),
       mStock(VendingMachine::NUM_FLAVOURS, 0),
@@ -43,7 +46,7 @@ void BottlingPlant::main() {
       // make some soda
       for (int i = mTimeBetweenShipments; i > 0; --i) { yield(); }
       for (int i = 0; i < mStock.size(); ++i) {
-        mStock[i] = mprng(maxShippedPerFlavour);
+        mStock[i] = mprng(mMaxShippedPerFlavour);
       }
       // wait for the truck to take some, or to be told to quit
       _Accept(~BottlingPlant) {

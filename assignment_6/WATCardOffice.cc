@@ -1,4 +1,5 @@
 #include "WATCardOffice.h"
+#include "MPRNG.h"
 
 WATCardOffice::WATCardOffice(
     Printer &prt,
@@ -6,34 +7,43 @@ WATCardOffice::WATCardOffice(
     unsigned int numCouriers)
     : mPrinter(prt),
       mBank(bank),
-      mNumCouriers(numCouriers),
-      mKilled(false) {}
+      mNumCouriers(numCouriers) {}
 
-FWATCard WATCardOffice::create(unsigned int sid, unsigned int amount) {
+WATCard::FWATCard WATCardOffice::create(unsigned int sid, unsigned int amount) {
   WATCard* newCard = new WATCard();
   mPendingJob = new Job(sid, amount, newCard);
-  mPrinter.print(Printer::WATCardOffice, CreationRendezvousDone, sid, amount);
-  return newJob->mResult;
+  mPrinter.print(
+      Printer::WATCardOffice,
+      (char)CreationRendezvousDone,
+      sid,
+      amount);
+  return mPendingJob->mResult;
 }
 
-FWATCard WATCardOffice::transfer(
+WATCard::FWATCard WATCardOffice::transfer(
     unsigned int sid,
     unsigned int amount,
     WATCard* card) {
   mPendingJob = new Job(sid, amount, card);
-  mPrinter.print(Printer::WATCardOffice, TransferRendezvousDone, sid, amount);
-  return newJob->mResult;
+  mPrinter.print(
+      Printer::WATCardOffice,
+      (char)TransferRendezvousDone,
+      sid,
+      amount);
+  return mPendingJob->mResult;
 }
 
-Job* WATCardOffice::requestWork() {
+WATCardOffice::Job* WATCardOffice::requestWork() {
   return mPendingJob;
 }
 
-Courier::Courier(unsigned int id, WATCardOffice* office, Bank& bank)
-    : mId(id), mOffice(office), mBank(bank) {}
+WATCardOffice::Courier::Courier(
+    unsigned int id,
+    WATCardOffice* office,
+    Bank& bank) : mId(id), mOffice(office), mBank(bank) {}
 
 void WATCardOffice::Courier::main() {
-  mOffice->mPrinter.print(Printer::Courier, mId, Printer::Starting);
+  mOffice->mPrinter.print(Printer::Courier, mId, (char)Printer::Starting);
 
   for (;;) {
     Job* job = mOffice->requestWork();
@@ -47,14 +57,14 @@ void WATCardOffice::Courier::main() {
         Printer::Courier,
         mId,
         StartTransfer,
-        job->mId,
+        job->mStudentId,
         job->mAmount);
 
-    mBank.withdraw(job->mId, job->mAmount);
+    mBank.withdraw(job->mStudentId, job->mAmount);
 
     if (mprng(1, 6) == 1) {
       // I lose the card
-      job->mResult.exception(WATCardOffice::Lost());
+      job->mResult.exception(new WATCardOffice::Lost());
       delete job->mCard;
       delete job;
     } else {
@@ -64,13 +74,13 @@ void WATCardOffice::Courier::main() {
           Printer::Courier,
           mId,
           DoneTransfer,
-          job->mId,
+          job->mStudentId,
           job->mAmount);
       delete job;
     }
   }
 
-  mOffice->mPrinter.print(Printer::Courier, mId, Printer::Finished);
+  mOffice->mPrinter.print(Printer::Courier, mId, (char)Printer::Finished);
 }
 
 void WATCardOffice::main() {
@@ -79,7 +89,7 @@ void WATCardOffice::main() {
   // create the couriers
   vector<Courier*> couriers;
   for (int i = 0; i < mNumCouriers; ++i) {
-    couriers.push_back(new Courier(this, mBank));
+    couriers.push_back(new Courier(i, this, mBank));
   }
 
   for (;;) {
@@ -93,7 +103,7 @@ void WATCardOffice::main() {
   }
 
   // Wait for the couriers to quit
-  mPendingWork = NULL;
+  mPendingJob = NULL;
   for (int i = 0; i < couriers.size(); ++i) {
     delete couriers[i];
   }

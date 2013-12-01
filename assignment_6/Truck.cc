@@ -1,4 +1,6 @@
 #include "Truck.h"
+#include "VendingMachine.h"
+#include "MPRNG.h"
 
 Truck::Truck(
     Printer &prt,
@@ -19,9 +21,9 @@ void Truck::main() {
   unsigned int* cargo = new unsigned int[VendingMachine::NUM_FLAVOURS];
   for (;;) {
     // wait at timmies
-    for (int i = mprng(1, 10), i > 0; --i) { yield(); }
+    for (int i = mprng(1, 10); i > 0; --i) { yield(); }
     // get the shipment
-    if (mBottlingPlant.getShipment(cargo)) {
+    if (mPlant.getShipment(cargo)) {
       // Plant told me to terminate
       break;
     }
@@ -30,7 +32,7 @@ void Truck::main() {
     for (int i = 0; i < VendingMachine::NUM_FLAVOURS; ++i) {
       shipmentTotal += cargo[i];
     }
-    mPrinter.print(Printer::Truck, ShipmentPickedUp, shipmentTotal);
+    mPrinter.print(Printer::Truck, (char)ShipmentPickedUp, shipmentTotal);
 
     // do the deliveries
     for (int machineIdx = 0;
@@ -40,7 +42,7 @@ void Truck::main() {
       unsigned int* inventory = machines[machineIdx]->inventory();
       mPrinter.print(
           Printer::Truck,
-          BeginDelivery,
+          (char)BeginDelivery,
           machines[machineIdx]->getId(),
           shipmentTotal);
 
@@ -62,13 +64,13 @@ void Truck::main() {
       if (unfilled == 0) {
         mPrinter.print(
             Printer::Truck,
-            SuccessfulDelivery,
+            (char)SuccessfulDelivery,
             machines[machineIdx]->getId(),
             shipmentTotal);
       } else {
         mPrinter.print(
             Printer::Truck,
-            UnsuccessfulDelivery,
+            (char)UnsuccessfulDelivery,
             machines[machineIdx]->getId(),
             unfilled);
       }

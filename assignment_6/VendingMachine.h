@@ -3,13 +3,12 @@
 #include "Printer.h"
 #include "NameServer.h"
 #include "WATCard.h"
-#include "Flavours.h"
 
 _Task VendingMachine {
 public:
   // flavours of soda (YOU DEFINE)
   enum Flavours {
-    BlackCherry,
+    BlackCherry = 0,
     CreamSoda,
     RootBeer,
     Lime,
@@ -30,10 +29,13 @@ public:
   void restocked();
   _Nomutex unsigned int cost();
   _Nomutex unsigned int getId();
+
+  virtual ~VendingMachine();
+
 private:
   void main();
 
-  enum Status {
+  enum States {
     StartReloading = 'r',
     DoneReloading = 'R',
     BoughtSoda = 'B',
@@ -44,4 +46,5 @@ private:
   unsigned int mId;
   unsigned int mSodaCost;
   unsigned int mMaxStockPerFlavour;
+  unsigned int *mStockLevels;
 };

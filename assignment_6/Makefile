@@ -5,7 +5,7 @@ MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}
 
 OBJECTS = Bank.o BottlingPlant.o ConfigParams.o MPRNG.o NameServer.o Parent.o Student.o Truck.o VendingMachine.o WATCard.o WATCardOffice.o soda.o
 DEPENDS = ${OBJECTS:.o=.d}
-EXEC = northpole
+EXEC = soda
 
 ${EXEC} : ${OBJECTS}
 	${CXX} ${CXXFLAGS} $^ -o $@

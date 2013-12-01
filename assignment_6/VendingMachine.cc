@@ -12,6 +12,9 @@ VendingMachine::VendingMachine(
       mSodaCost(sodaCost),
       mMaxStockPerFlavour(maxStockPerFlavour) {
   mStockLevels = new unsigned int[NUM_FLAVOURS];
+  for (unsigned int i = 0; i < NUM_FLAVOURS; ++i) {
+    mStockLevels[i] = 0;
+  }
 }
 
 VendingMachine::~VendingMachine() {

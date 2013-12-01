@@ -16,6 +16,11 @@ NameServer::NameServer(
   }
 }
 
+NameServer::~NameServer() {
+  delete[] mMachines;
+  delete[] mStudentMachineMapping;
+}
+
 void NameServer::VMRegister(VendingMachine *vendingMachine) {
   mPrinter.print(
       Printer::NameServer,

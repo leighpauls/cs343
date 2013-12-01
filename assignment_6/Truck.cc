@@ -77,5 +77,6 @@ void Truck::main() {
     }
   }
 
+  delete[] cargo;
   mPrinter.print(Printer::Truck, Printer::Finished);
 }

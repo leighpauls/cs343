@@ -20,7 +20,7 @@ Student::Student(
 void Student::main() {
   unsigned int bottlesToBuy = mprng(1, mMaxPurchases);
   VendingMachine::Flavours favoriteFlavour = (VendingMachine::Flavours)mprng(
-      (unsigned int)VendingMachine::NUM_FLAVOURS);
+      (unsigned int)VendingMachine::NUM_FLAVOURS - 1);
   mPrinter.print(
       Printer::Student,
       mId,
@@ -30,6 +30,7 @@ void Student::main() {
 
   VendingMachine* machine = NULL;
   WATCard::FWATCard cardFuture = mCardOffice.create(mId, 5);
+  WATCard* card = NULL;
   while (bottlesToBuy > 0) {
     if (machine == NULL) {
       // Need a new machine
@@ -45,7 +46,7 @@ void Student::main() {
     for (int i = mprng(1, 10); i > 0; i--) { yield(); }
     try {
       // make sure I've got a card
-      WATCard* card = cardFuture();
+      card = cardFuture();
       // buy some soda
       VendingMachine::Status status = machine->buy(
           favoriteFlavour,
@@ -69,9 +70,11 @@ void Student::main() {
       }
     } catch (WATCardOffice::Lost l) {
       // ask for a new card
+      card = NULL;
       cardFuture = mCardOffice.create(mId, 5);
       mPrinter.print(Printer::Student, mId, (char)WATCardLost);
     }
   }
+  delete card;
   mPrinter.print(Printer::Student, mId, (char)Printer::Finished);
 }

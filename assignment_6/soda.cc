@@ -50,49 +50,58 @@ void uMain::main() {
         conf.numVendingMachines,
         conf.numCouriers);
     Bank bank(conf.numStudents);
-    Parent parent(printer, bank, conf.numStudents, conf.parentalDelay);
-    NameServer nameServer(printer, conf.numVendingMachines, conf.numStudents);
-    WATCardOffice cardOffice(printer, bank, conf.numCouriers);
-    vector<VendingMachine*> machines;
+
+
     {
-      BottlingPlant bottlingPlant(
-          printer,
-          nameServer,
-          conf.numVendingMachines,
-          conf.maxShippedPerFlavour,
-          conf.maxStockPerFlavour,
-          conf.timeBetweenShipments);
+      WATCardOffice cardOffice(printer, bank, conf.numCouriers);
 
-      vector<Student*> students;
-      for (unsigned int i = 0; i < conf.numStudents; ++i) {
-        students.push_back(new Student(
-            printer,
-            nameServer,
-            cardOffice,
-            i,
-            conf.maxPurchases));
-      }
+      {
+        NameServer nameServer(printer, conf.numVendingMachines, conf.numStudents);
+        Parent parent(printer, bank, conf.numStudents, conf.parentalDelay);
+        vector<VendingMachine*> machines;
+        {
+          BottlingPlant bottlingPlant(
+              printer,
+              nameServer,
+              conf.numVendingMachines,
+              conf.maxShippedPerFlavour,
+              conf.maxStockPerFlavour,
+              conf.timeBetweenShipments);
 
-      for (unsigned int i = 0; i < conf.numVendingMachines; ++i) {
-        machines.push_back(new VendingMachine(
-            printer,
-            nameServer,
-            i,
-            conf.sodaCost,
-            conf.maxStockPerFlavour));
-      }
+          vector<Student*> students;
+          for (unsigned int i = 0; i < conf.numStudents; ++i) {
+            students.push_back(new Student(
+                printer,
+                nameServer,
+                cardOffice,
+                i,
+                conf.maxPurchases));
+          }
 
-      // wait for the students to terminate first
-      for (unsigned int i = 0; i < students.size(); ++i) {
-        delete students[i];
+          for (unsigned int i = 0; i < conf.numVendingMachines; ++i) {
+            machines.push_back(new VendingMachine(
+                printer,
+                nameServer,
+                i,
+                conf.sodaCost,
+                conf.maxStockPerFlavour));
+          }
+
+          // wait for the students to terminate first
+          for (unsigned int i = 0; i < students.size(); ++i) {
+            delete students[i];
+          }
+          // plant, truck
+        }
+        // now it's safe for the machines to terminate
+        for (unsigned int i = 0; i < machines.size(); ++i) {
+          delete machines[i];
+        }
+        // name server, parent
       }
-      // then wait for the plant+truck
+      // Card office, courier
     }
-    // now it's safe for the machines to terminate
-    for (unsigned int i = 0; i < machines.size(); ++i) {
-      delete machines[i];
-    }
-    // wait for everything else to terminate
+    // Bank, printer
   }
   cout<<"***********************"<<endl;
 }

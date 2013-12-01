@@ -14,6 +14,7 @@ public:
   VendingMachine *getMachine(unsigned int studentId);
   VendingMachine **getMachineList();
 
+  virtual ~NameServer();
 private:
   void main();
 

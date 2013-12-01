@@ -98,8 +98,9 @@ void Printer::flushBuffer() {
     ss<<mBuffer[i]<<'\t';
     mBuffer[i] = string("");
   }
-  ss<<mBuffer[mBuffer.size()-1]<<endl;
-  cout<<ss.str();
+  ss<<mBuffer[mBuffer.size()-1];
+  mBuffer[mBuffer.size()-1] = string("");
+  cout<<ss.str()<<endl;
   mNumPending = 0;
 }
 
@@ -158,5 +159,5 @@ unsigned int Printer::kindToIdx(Kind kind, unsigned int id) {
     default:
       break;
   }
-  return (unsigned int)-1; // fail
+  return kindToIdx(kind);
 }

@@ -28,6 +28,7 @@ int doConvert(const char* str, int minValue, const char* cmd) {
 }
 
 void uMain::main() {
+  cout<<"Start"<<endl;
   unsigned int seed = getpid();
   const char* configFile = "soda.config";
   switch (argc) {
@@ -44,7 +45,6 @@ void uMain::main() {
   processConfigFile(configFile, conf);
 
   mprng.seed(seed);
-
   {
     Printer printer(
         conf.numStudents,
@@ -65,7 +65,7 @@ void uMain::main() {
           conf.timeBetweenShipments);
 
       vector<Student*> students;
-      for (int i = 0; i < conf.numStudents; ++i) {
+      for (unsigned int i = 0; i < conf.numStudents; ++i) {
         students.push_back(new Student(
             printer,
             nameServer,
@@ -74,7 +74,7 @@ void uMain::main() {
             conf.maxPurchases));
       }
 
-      for (int i = 0; i < conf.numVendingMachines; ++i) {
+      for (unsigned int i = 0; i < conf.numVendingMachines; ++i) {
         machines.push_back(new VendingMachine(
             printer,
             nameServer,
@@ -84,13 +84,13 @@ void uMain::main() {
       }
 
       // wait for the students to terminate first
-      for (int i = 0; i < students.size(); ++i) {
+      for (unsigned int i = 0; i < students.size(); ++i) {
         delete students[i];
       }
       // then wait for the plant+truck
     }
     // now it's safe for the machines to terminate
-    for (int i = 0; i < machines.size(); ++i) {
+    for (unsigned int i = 0; i < machines.size(); ++i) {
       delete machines[i];
     }
     // wait for everything else to terminate

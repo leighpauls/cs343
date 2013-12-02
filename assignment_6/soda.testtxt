@@ -1,0 +1,316 @@
+Script started on Mon 02 Dec 2013 05:03:01 PM EST
+//home/leigh/class/cs343
+leigh@leigh-VirtualBox:~/class/cs343$ make clean
+make: *** No rule to make target `clean'.  Stop.
+//home/leigh/class/cs343
+leigh@leigh-VirtualBox:~/class/cs343$ cd assignment_6
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ make clean
+rm -f *.d *.o soda
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ make soda
+u++ -g -Wall -Wno-unused-label -MMD    -c -o Bank.o Bank.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o BottlingPlant.o BottlingPlant.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+BottlingPlant.cc: In member function ‘bool BottlingPlant::getShipment(unsigned int*)’:
+BottlingPlant.cc:33:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+BottlingPlant.cc: In member function ‘virtual void BottlingPlant::main()’:
+BottlingPlant.cc:54:40: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+u++ -g -Wall -Wno-unused-label -MMD    -c -o ConfigParams.o ConfigParams.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o MPRNG.o MPRNG.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o NameServer.o NameServer.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+NameServer.cc: In constructor ‘NameServer::NameServer(Printer&, unsigned int, unsigned int, UPP::uAction)’:
+NameServer.cc:14:42: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+u++ -g -Wall -Wno-unused-label -MMD    -c -o Parent.o Parent.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o Student.o Student.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o Truck.o Truck.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+Truck.cc: In member function ‘virtual void Truck::main()’:
+Truck.cc:39:15: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+u++ -g -Wall -Wno-unused-label -MMD    -c -o VendingMachine.o VendingMachine.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o WATCard.o WATCard.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o WATCardOffice.o WATCardOffice.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+WATCardOffice.cc: In member function ‘virtual void WATCardOffice::main()’:
+WATCardOffice.cc:117:24: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+u++ -g -Wall -Wno-unused-label -MMD    -c -o Printer.o Printer.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD    -c -o soda.o soda.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++ -g -Wall -Wno-unused-label -MMD  Bank.o BottlingPlant.o ConfigParams.o MPRNG.o NameServer.o Parent.o Student.o Truck.o VendingMachine.o WATCard.o WATCardOffice.o Printer.o soda.o -o soda
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ 
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ ./soda
+Parent	WATOff	Names	Truck	Plant	Stud0	Stud1	Mach0	Mach1	Mach2	Cour0
+*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******
+S	S	S		S	S2,2					
+D1,2	C0,5	R0	S			S1,8	S2	S2	S2	S
+										t0,5
+D1,1	C1,5	R1								T0,5
+D0,3		R2								t1,5
+D1,2		N0,0			V0					T1,5
+D0,1		N1,1				V1				
+D0,2										
+D0,3		N0,1			V1					
+D1,2			P7				r			
+D0,1		N1,2	d0,7	P		V2	R			
+D0,3		N1,0	U0,13			V0				
+D1,2		N0,2			V2					
+D1,1										
+D1,1			P9				r			
+D1,1			d0,9	P			R			
+			U0,5					r		
+D1,1		N0,0	d1,1		V0	B3	B1,0	R		
+D0,3			U1,19		B3		B2,4			
+D0,2										
+D0,1		N1,1				V1				
+D0,2		N1,2				V2				
+D1,3			P9				r			
+D1,3			d0,9	P			R			
+			U0,2					r		
+D1,3			d1,4		B1		B2,4			
+...	...	...	...	...	F	...	...	...	...	...
+			U1,15					R		
+			P4				r			
+D1,1			d0,4	P			R			
+			U0,2					r		
+D0,3		N1,0	d1,3			V0		R		
+D1,2			U1,12			B1	B1,2			
+D1,2										
+D1,2										
+D1,2										
+D1,2			P6				r			
+D0,3			d0,6	P			R			
+			U0,3					r		
+D1,1	T1,7		d1,6					R		
+			U1,7						r	
+D0,3			d2,1							t1,7
+D0,3			U2,19			B6	B1,1		R	T1,7
+D0,2										
+D1,3			P1				r			
+D1,3			d0,1	P			R			
+			U0,4					r		
+D0,2			d1,1			B4	B1,0	R		
+D0,1			U1,6							
+D0,3			P2				r			
+D1,2			d0,2	P			R			
+			U0,4					r		
+D0,2			d1,1			B2	B1,0	R		
+			U1,6						r	
+D0,2			d2,1						R	
+D1,1		N1,1	U2,18			V1				
+D0,3		N1,2	P5	P		V2	r			
+D0,1		N1,0	d0,5			V0	R			
+			U0,4					r		
+D1,1			d1,4			B0	B1,0	R		
+			U1,5						r	
+D0,3			d2,3						R	
+D1,2			U2,15							
+			P6				r			
+D0,1			d0,6	P			R			
+			U0,3					r		
+D1,1	T1,7		d1,4					R		
+			U1,5						r	
+D0,1			d2,4							t1,7
+D0,2			U2,11			B5	B1,1		R	T1,7
+D1,2										
+D1,2										
+D0,1			P8				r			
+D0,1			d0,8	P			R			
+			U0,1					r		
+D0,2			d1,5			B3	B1,3			
+...	...	...	...	...	...	F	...	...	...	...
+			U1,5					R	r	
+D1,3			d2,5						R	
+D1,3			U2,8							
+...	...	...	F	...	...	...	...	...	...	...
+D1,2										
+...	...	...	...	F	...	...	...	...	...	...
+D0,3										
+...	...	...	...	...	...	...	F	...	...	...
+D1,2										
+...	...	...	...	...	...	...	...	F	...	...
+D1,3										
+...	...	...	...	...	...	...	...	...	F	...
+F	...	...	...	...	...	...	...	...	...	...
+...	...	F	...	...	...	...	...	...	...	...
+...	...	...	...	...	...	...	...	...	...	F
+...	F	...	...	...	...	...	...	...	...	...
+***********************
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ ./soda not_a_file
+Error: could not open input file "not_a_file"
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ ./soda soda.config
+Parent	WATOff	Names	Truck	Plant	Stud0	Stud1	Mach0	Mach1	Mach2	Cour0
+*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******
+S	S	S		S	S1,3					
+D0,1	C0,5	R0	S			S0,6	S2	S2	S2	S
+D1,3	C1,5	R1								t0,5
+D0,2		R2								t1,5
+D0,3		N0,0			V0					T1,5
+D1,1		N1,1				V1				
+D0,1	C0,5	N1,2			L	V2				
+D1,1										t0,5
+D1,2										T0,5
+D1,2			P7				r			
+D0,3			d0,7	P			R			
+D0,3		N1,0	U0,13		B3	V0	B1,0			
+D0,3										
+D0,3			P4				r			
+D0,3			d0,4	P			R			
+D0,3			U0,10			B3	B0,2			
+D0,2			P5		B1		B1,1			
+D0,3				P		B1	B0,1			
+D0,2			d0,5				r			
+D1,1			U0,9				R	r		
+D1,3	T0,7		d1,1					R		
+D0,2			U1,19							t0,7
+D0,1	T1,7									T0,7
+D0,2										t1,7
+					B6		B1,0			T1,7
+...	...	...	...	...	F	...	...	...	...	...
+D0,3			P10				r			
+D0,1			d0,10	P			R			
+			U0,3					r		
+D1,2			d1,3					R		
+D0,3			U1,16			B6	B0,3			
+D1,2						B4	B0,2			
+D0,2			P8			B2	B0,1			
+D0,3			d0,8	P			r			
+			U0,3				R	r		
+D1,1			d1,5					R		
+			U1,12						r	
+D1,1			d2,1						R	
+D1,1			U2,19			B0	B0,3			
+...	...	...	...	...	...	F	...	...	...	...
+D0,1										
+D1,2										
+D0,2										
+D0,1										
+...	...	...	F	...	...	...	...	...	...	...
+...	...	...	...	F	...	...	...	...	...	...
+D0,1										
+...	...	...	...	...	...	...	F	...	...	...
+D1,3										
+...	...	...	...	...	...	...	...	F	...	...
+D0,2										
+...	...	...	...	...	...	...	...	...	F	...
+D0,1										
+F	...	...	...	...	...	...	...	...	...	...
+...	...	F	...	...	...	...	...	...	...	...
+...	...	...	...	...	...	...	...	...	...	F
+...	F	...	...	...	...	...	...	...	...	...
+***********************
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ ./soda soda.config 1
+Parent	WATOff	Names	Truck	Plant	Stud0	Stud1	Mach0	Mach1	Mach2	Cour0
+*******	*******	*******	*******	*******	*******	*******	*******	*******	*******	*******
+S	S	S		S	S2,8					
+D1,2	C0,5	R0	S			S3,2	S2	S2	S2	S
+										t0,5
+D1,3	C1,5	R1								T0,5
+D1,3		R2								t1,5
+D0,2		N0,0			V0					T1,5
+D1,3		N1,1				V1				
+D1,3		N0,1	P4		V1		r			
+D0,2			d0,4	P			R			
+D1,1		N1,2	U0,16			V2				
+D1,2		N0,2			V2					
+D0,1		N0,0			V0					
+D1,3		N1,0	P8			V0	r			
+D1,3			d0,8	P			R			
+D1,1			U0,8			B3	B3,4			
+D1,3					B3		B2,1			
+D0,2			P6	P	B1		B2,0			
+D1,3			d0,6				r			
+D1,3			U0,5				R			
+D0,1						B1	B3,3			
+...	...	...	...	...	...	F	...	...	...	...
+D0,1	T0,7									
+D1,3										t0,7
+			P5				r			T0,7
+D1,3			d0,5	P			R			
+			U0,2					r		
+D1,1			d1,1		B6		B2,3	R		
+D0,2			U1,19							
+			P2				r			
+D0,1			d0,2	P			R			
+			U0,3					r		
+D0,1			d1,2		B4		B2,2	R		
+D1,2			U1,17							
+D0,2										
+D1,1					B2		B2,1			
+D0,1										
+D0,2			P5				r			
+D0,2			d0,5	P			R			
+			U0,4					r		
+D0,3			d1,4		B0		B2,0	R		
+			U1,14						r	
+D0,1		N0,1	d2,1		V1				R	
+D1,3		N0,2	U2,19		V2					
+D1,1		N0,0			V0					
+D1,2										
+D1,1			P5				r			
+D0,3			d0,5	P			R			
+			U0,5					r		
+D0,3		N0,1	d1,5		V1			R		
+			U1,10						r	
+D1,1			d2,1						R	
+D0,1			U2,18							
+D0,3										
+D0,1										
+D0,3		N0,2			V2					
+D1,3			P3				r			
+D1,2			d0,3	P			R			
+D1,2			U0,2							
+D1,2		N0,0			V0					
+D0,1			P3				r			
+D0,3			d0,3	P			R			
+			U0,1					r		
+D0,1	T0,7		d1,2					R		
+			U1,9						r	
+D0,3			d2,1							t0,7
+D1,1			U2,17		B5		B2,3		R	T0,7
+D1,3										
+D1,3			P7				r			
+D1,1			d0,7	P			R			
+			D0,5					r		
+D1,3			d1,5		B3		B2,4			
+...	...	...	...	...	F	...	...	...	...	...
+			U1,5					R	r	
+D1,3			d2,1						R	
+D1,2			U2,16							
+D1,3										
+...	...	...	F	...	...	...	...	...	...	...
+D0,2										
+...	...	...	...	F	...	...	...	...	...	...
+D0,2										
+...	...	...	...	...	...	...	F	...	...	...
+D0,1										
+...	...	...	...	...	...	...	...	F	...	...
+D1,1										
+...	...	...	...	...	...	...	...	...	F	...
+F	...	...	...	...	...	...	...	...	...	...
+...	...	F	...	...	...	...	...	...	...	...
+...	...	...	...	...	...	...	...	...	...	F
+...	F	...	...	...	...	...	...	...	...	...
+***********************
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ ./soda soda.config 1[K-1
+Usage: ./soda [ config-file [ random-seed (> 0) ] ]
+//home/leigh/class/cs343/assignment_6
+leigh@leigh-VirtualBox:~/class/cs343/assignment_6$ exit
+exit
+
+Script done on Mon 02 Dec 2013 05:04:08 PM EST

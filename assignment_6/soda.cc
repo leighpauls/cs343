@@ -18,6 +18,13 @@ void usageQuit(const char* cmd) {
   exit(0);
 }
 
+/**
+ * Get an int from a command line argument, quit and show usage on error.
+ * @param str the argument to parse
+ * @param minValue the minimum acceptable value
+ * @param cmd The command to use in the case of an error message
+ * @return the parsed number
+ */
 int doConvert(const char* str, int minValue, const char* cmd) {
   char* end;
   int res = strtol(str, &end, 10);
@@ -30,6 +37,7 @@ int doConvert(const char* str, int minValue, const char* cmd) {
 void uMain::main() {
   unsigned int seed = getpid();
   const char* configFile = "soda.config";
+  // parse the command line args
   switch (argc) {
     case 3:
       seed = doConvert(argv[2], 0, argv[0]);
@@ -40,10 +48,13 @@ void uMain::main() {
     default:
       usageQuit(argv[0]);
   }
+
   ConfigParms conf;
   processConfigFile(configFile, conf);
-
   mprng.seed(seed);
+
+  // Vairable scope must be placed carefully to prevent referencing deallocated
+  // memory, things are delclared only as high in the scope as they need to be
   {
     Printer printer(
         conf.numStudents,
@@ -51,12 +62,13 @@ void uMain::main() {
         conf.numCouriers);
     Bank bank(conf.numStudents);
 
-
     {
       WATCardOffice cardOffice(printer, bank, conf.numCouriers);
-
       {
-        NameServer nameServer(printer, conf.numVendingMachines, conf.numStudents);
+        NameServer nameServer(
+            printer,
+            conf.numVendingMachines,
+            conf.numStudents);
         Parent parent(printer, bank, conf.numStudents, conf.parentalDelay);
         vector<VendingMachine*> machines;
         {
@@ -91,17 +103,17 @@ void uMain::main() {
           for (unsigned int i = 0; i < students.size(); ++i) {
             delete students[i];
           }
-          // plant, truck
+          // wait for plant, truck
         }
         // now it's safe for the machines to terminate
         for (unsigned int i = 0; i < machines.size(); ++i) {
           delete machines[i];
         }
-        // name server, parent
+        // wait for name server, parent
       }
-      // Card office, courier
+      // wait for Card office, courier
     }
-    // Bank, printer
+    // wait for Bank, printer
   }
   cout<<"***********************"<<endl;
 }

@@ -18,6 +18,7 @@ Student::Student(
       mMaxPurchases(maxPurchases) {}
 
 void Student::main() {
+  // Decice what and how much I'll buy
   unsigned int bottlesToBuy = mprng(1, mMaxPurchases);
   VendingMachine::Flavours favoriteFlavour = (VendingMachine::Flavours)mprng(
       (unsigned int)VendingMachine::NUM_FLAVOURS - 1);
@@ -28,6 +29,7 @@ void Student::main() {
       favoriteFlavour,
       bottlesToBuy);
 
+  // Initiully, I need to ask for a new machine
   VendingMachine* machine = NULL;
   WATCard::FWATCard cardFuture = mCardOffice.create(mId, 5);
   WATCard* card = NULL;
@@ -65,6 +67,7 @@ void Student::main() {
           machine = NULL;
           break;
         case VendingMachine::FUNDS:
+          // ask for a money transfer
           cardFuture = mCardOffice.transfer(mId, machine->cost() + 5, card);
           break;
       }
@@ -75,6 +78,7 @@ void Student::main() {
       mPrinter.print(Printer::Student, mId, (char)WATCardLost);
     }
   }
+  // delete the card that I was left with
   delete card;
   mPrinter.print(Printer::Student, mId, (char)Printer::Finished);
 }

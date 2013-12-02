@@ -21,6 +21,12 @@ VendingMachine::~VendingMachine() {
   delete [] mStockLevels;
 }
 
+/**
+ * Called by a student trying to buy one soda
+ * @param flavour The flavour to purchase
+ * @param card The student's WATCard used to pay
+ * @return The result of the transaction
+ */
 VendingMachine::Status VendingMachine::buy(Flavours flavour, WATCard &card) {
   // I'm allowed to try buying now
   if (mStockLevels[flavour] == 0) {
@@ -41,10 +47,20 @@ VendingMachine::Status VendingMachine::buy(Flavours flavour, WATCard &card) {
   return BUY;
 }
 
+/**
+ * Called to indicate that restocking has started, and nothing else can be done
+ * on the machine until restocking has finished
+ * @return A modifyable pointer to the stock levels of this machine
+ */
 unsigned int* VendingMachine::inventory() {
   mPrinter.print(Printer::VendingMachine, mId, (char)StartReloading);
   return mStockLevels;
 }
+
+/**
+ * Called to indicate that restocking has finished, and the machine can be used
+ * again
+ */
 void VendingMachine::restocked() {
   mPrinter.print(Printer::VendingMachine, mId, (char)DoneReloading);
 }
@@ -64,10 +80,11 @@ void VendingMachine::main() {
       (char)Printer::Starting,
       mSodaCost);
 
+  // register myself
   mNameServer.VMRegister(this);
   for (;;) {
     _Accept(inventory) {
-      // wait for restocking to finish
+      // Restocking has started, nothing else can be done until it's finished
       _Accept(restocked);
     } or _Accept(buy) {
       // do nothing

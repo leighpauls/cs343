@@ -42,14 +42,17 @@ void Printer::main() {
     ss.str("");
   }
   flushBuffer();
+
   // print the asterisks
   for (unsigned int i = 0; i < mBuffer.size(); ++i) {
     mBuffer[i] = string("*******");
   }
   flushBuffer();
+
   for (;;) {
     // get a new state
     suspend();
+    // print that state
     if (mNextState == Finished) {
       printNextStateFinished();
     } else {
@@ -58,6 +61,9 @@ void Printer::main() {
   }
 }
 
+/**
+ * Special print function for finished states
+ */
 void Printer::printNextStateFinished() {
   // print any pending states
   if (mNumPending > 0) {
@@ -75,6 +81,7 @@ void Printer::printNextStateFinished() {
   flushBuffer();
 }
 
+/// Print the new state, flushing the buffer if nessisary
 void Printer::printNextState() {
   if (mBuffer[mNextIdx].length() != 0) {
     // don't overwrite values
@@ -92,6 +99,7 @@ void Printer::printNextState() {
   mNumPending++;
 }
 
+/// Print the buffered output to the console, and clear the buffer
 void Printer::flushBuffer() {
   stringstream ss;
   for (unsigned int i = 0; i < mBuffer.size()-1; ++i) {

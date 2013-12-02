@@ -19,6 +19,11 @@ BottlingPlant::BottlingPlant(
       mStock(VendingMachine::NUM_FLAVOURS, 0),
       mTerminating(false) {}
 
+/**
+ * Gets the next shipment of soda. This will be blocked on the task monitor
+ * until the shipment is ready.
+ * @return true iff production has stopped
+ */
 bool BottlingPlant::getShipment(unsigned int cargo[]) {
   if (mTerminating) {
     // it's time to quit
@@ -35,6 +40,7 @@ bool BottlingPlant::getShipment(unsigned int cargo[]) {
 void BottlingPlant::main() {
   mPrinter.print(Printer::BottlingPlant, Printer::Starting);
   {
+    // create a new truck
     Truck truck(
         mPrinter,
         mNameServer,
@@ -58,6 +64,7 @@ void BottlingPlant::main() {
     // let the truck terminate
     mTerminating = true;
     _Accept(getShipment);
+    // wait for the truck to terminate
   }
   mPrinter.print(Printer::BottlingPlant, Printer::Finished);
 }
